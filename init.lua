@@ -1,5 +1,12 @@
+
+-- =========================================================
+-- LAZY.NVIM BOOTSTRAP
+-- =========================================================
+
+-- Location where lazy.nvim will be installed.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+-- Install lazy.nvim automatically if it is not installed yet.
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -11,34 +18,116 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 
+-- Add lazy.nvim to Neovim's runtime path.
 vim.opt.rtp:prepend(lazypath)
 
+
+-- =========================================================
+-- LEADER KEYS
+-- =========================================================
+
+-- Space is the leader key.
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+
+-- =========================================================
+-- EDITOR OPTIONS
+-- =========================================================
+
+-- Show absolute line numbers.
 vim.opt.number = true
+
+-- Do not show relative line numbers.
 vim.opt.relativenumber = false
+
+-- Enable true-color support.
 vim.opt.termguicolors = true
+
+-- Highlight the line where the cursor is located.
 vim.opt.cursorline = true
--- vim.opt.guicursor = "" -- Jangan dinyalakan, biar notice beda Normal Mode dan Insert Mode.
+
+-- Keep the Normal and Insert cursor shapes distinct.
+-- Disabled intentionally so the current mode remains visually noticeable.
+-- vim.opt.guicursor = ""
+
+-- Always reserve a column for signs such as diagnostics.
 vim.opt.signcolumn = "yes"
-vim.opt.wrap = true 
+
+
+-- ---------------------------------------------------------
+-- Text Wrapping & Spelling
+-- ---------------------------------------------------------
+
+-- Wrap long lines instead of scrolling horizontally.
+vim.opt.wrap = true
+
+-- Enable spell checking.
 vim.opt.spell = true
+
+-- Prefer breaking wrapped lines at word boundaries.
 vim.opt.linebreak = true
+
+
+-- ---------------------------------------------------------
+-- Indentation
+-- ---------------------------------------------------------
+
+-- Insert spaces instead of tab characters.
 vim.opt.expandtab = true
+
+-- Number of spaces used for each indentation level.
 vim.opt.shiftwidth = 2
+
+-- Number of spaces a <Tab> represents.
 vim.opt.tabstop = 2
+
+
+-- ---------------------------------------------------------
+-- Input & Clipboard
+-- ---------------------------------------------------------
+
+-- Enable mouse support.
 vim.opt.mouse = "a"
+
+-- Use the system clipboard for yank/delete/paste operations.
 vim.opt.clipboard = "unnamedplus"
+
+
+-- ---------------------------------------------------------
+-- Search
+-- ---------------------------------------------------------
+
+-- Ignore case when searching...
 vim.opt.ignorecase = true
+
+-- ...unless the search contains uppercase letters.
 vim.opt.smartcase = true
+
+
+-- ---------------------------------------------------------
+-- Scrolling
+-- ---------------------------------------------------------
+
+-- Keep some context visible above/below the cursor.
 vim.opt.scrolloff = 8
 
+
+-- =========================================================
+-- PLUGINS
+-- =========================================================
+
 require("lazy").setup({
+
+  -- -------------------------------------------------------
+  -- Catppuccin — Colorscheme
+  -- -------------------------------------------------------
+
   {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
+
     config = function()
       require("catppuccin").setup({
         flavour = "macchiato",
@@ -49,18 +138,31 @@ require("lazy").setup({
     end,
   },
 
+
+  -- -------------------------------------------------------
+  -- Telescope — File & Search Navigation
+  -- -------------------------------------------------------
+
   {
     "nvim-telescope/telescope.nvim",
+
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
   },
 
+
+  -- -------------------------------------------------------
+  -- Lualine — Statusline
+  -- -------------------------------------------------------
+
   {
     "nvim-lualine/lualine.nvim",
+
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
+
     config = function()
       require("lualine").setup({
         options = {
@@ -71,54 +173,105 @@ require("lazy").setup({
   },
 })
 
+
+-- =========================================================
+-- TELESCOPE KEYMAPS
+-- =========================================================
+
 local builtin = require("telescope.builtin")
 
+-- Find files in the current project.
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {
   desc = "Find files",
 })
 
+-- Search text across the project using ripgrep.
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {
   desc = "Live grep / rg",
 })
 
+-- Browse currently opened buffers.
 vim.keymap.set("n", "<leader>fb", builtin.buffers, {
   desc = "Find buffers / opened files",
 })
 
+-- Search Neovim's built-in help.
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {
   desc = "Find help",
 })
 
 
-vim.keymap.set("n", "<A-Up>", ":m .-2<CR>", { unique = true })
-vim.keymap.set("n", "<A-Down>", ":m .+1<CR>", { unique = true })
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>", { unique = true })
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>", { unique = true })
+-- =========================================================
+-- MACOS / SUBLIME COMPATIBILITY
+-- =========================================================
 
--- vim.keymap.set("n", "<leader>e", function()
---   vim.cmd("split | terminal yazi")
--- end, {
---   desc = "Open Yazi",
--- })
+-- ---------------------------------------------------------
+-- Move Lines
+-- ---------------------------------------------------------
 
+-- Option + Up/Down: move the current line.
+vim.keymap.set("n", "<A-Up>", ":m .-2<CR>", {
+  unique = true,
+})
+
+vim.keymap.set("n", "<A-Down>", ":m .+1<CR>", {
+  unique = true,
+})
+
+-- Option + K/J: alternative shortcuts for moving lines.
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>", {
+  unique = true,
+})
+
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>", {
+  unique = true,
+})
+
+
+-- ---------------------------------------------------------
+-- Horizontal Cursor Movement
+-- ---------------------------------------------------------
+
+-- Allow Left/Right to move across the boundary of wrapped lines.
 vim.opt.whichwrap:append("<,>,[,]")
 
--- Selection Mode seperti Sublime
+
+-- ---------------------------------------------------------
+-- Selection Behavior
+-- ---------------------------------------------------------
+
+-- Allow Shift/selection-style behavior from keys and mouse.
 vim.opt.selectmode = { "key", "mouse" }
+
+-- Start/stop selection according to the current cursor movement.
 vim.opt.keymodel = { "startsel", "stopsel" }
 
+
+-- ---------------------------------------------------------
+-- Word Deletion
+-- ---------------------------------------------------------
+
+-- Option + Backspace: delete the previous word.
 vim.keymap.set("i", "<A-BS>", "<C-W>", {
   desc = "Delete previous word",
 })
 
+-- Option + Delete: delete the next word.
 vim.keymap.set("i", "<A-Del>", "<C-O>de", {
   desc = "Delete next word",
 })
 
+-- Command + Backspace: delete from cursor to the beginning of the line.
 vim.keymap.set("i", "<D-BS>", "<C-U>", {
   desc = "Delete to beginning of line",
 })
 
+
+-- ---------------------------------------------------------
+-- Beginning / End of Line
+-- ---------------------------------------------------------
+
+-- Insert mode: Command + Left/Right.
 vim.keymap.set("i", "<D-Left>", "<Home>", {
   desc = "Beginning of line",
 })
@@ -127,6 +280,7 @@ vim.keymap.set("i", "<D-Right>", "<End>", {
   desc = "End of line",
 })
 
+-- Normal mode: Command + Left/Right.
 vim.keymap.set("n", "<D-Left>", "0", {
   desc = "Beginning of line",
 })
@@ -135,6 +289,12 @@ vim.keymap.set("n", "<D-Right>", "$", {
   desc = "End of line",
 })
 
+
+-- ---------------------------------------------------------
+-- Beginning / End of Document
+-- ---------------------------------------------------------
+
+-- Insert mode: Command + Up/Down.
 vim.keymap.set("i", "<D-Up>", "<C-Home>", {
   desc = "Beginning of document",
 })
@@ -143,6 +303,7 @@ vim.keymap.set("i", "<D-Down>", "<C-End>", {
   desc = "End of document",
 })
 
+-- Normal mode: Command + Up/Down.
 vim.keymap.set("n", "<D-Up>", "gg", {
   desc = "Beginning of document",
 })
@@ -151,6 +312,12 @@ vim.keymap.set("n", "<D-Down>", "G", {
   desc = "End of document",
 })
 
+
+-- ---------------------------------------------------------
+-- Word Navigation
+-- ---------------------------------------------------------
+
+-- Option + Left/Right: move one word at a time.
 vim.keymap.set("i", "<A-Left>", "<C-Left>", {
   desc = "Previous word",
 })
@@ -159,31 +326,49 @@ vim.keymap.set("i", "<A-Right>", "<C-Right>", {
   desc = "Next word",
 })
 
----------------------------
--- PROMPT BUFFER
----------------------------
 
+-- =========================================================
+-- PROMPT SCRATCH BUFFER
+-- =========================================================
+
+-- Short alias for vim.keymap.set().
 local map = vim.keymap.set
 
+
+-- ---------------------------------------------------------
+-- :Prompt
+-- ---------------------------------------------------------
+
+-- Create a new buffer intended for writing prompts.
 vim.api.nvim_create_user_command("Prompt", function()
   vim.cmd("enew")
 
+  -- Treat the buffer as Markdown.
   vim.bo.filetype = "markdown"
 
+  -- Prompt-specific writing preferences.
   vim.opt_local.wrap = true
   vim.opt_local.linebreak = true
   vim.opt_local.breakindent = true
   vim.opt_local.spell = true
 end, {})
 
+
+-- Space + P: create a new prompt buffer.
 map("n", "<leader>p", "<cmd>Prompt<cr>", {
   desc = "New prompt",
 })
 
----------------------------------------------------------------------------
--- AUTO SAVE WHEN LEAVING A FILE BUFFER
----------------------------------------------------------------------------
 
+-- =========================================================
+-- AUTO-SAVE
+-- =========================================================
+
+-- Automatically save a normal file when leaving its buffer,
+-- but only if the buffer has unsaved changes.
+--
+-- buftype == "" means this is a normal file buffer rather
+-- than a special buffer such as help, terminal, etc.
 vim.api.nvim_create_autocmd("BufLeave", {
   callback = function()
     if vim.bo.buftype == "" and vim.bo.modified then

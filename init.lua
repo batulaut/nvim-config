@@ -20,7 +20,7 @@ vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
--- vim.opt.guicursor = "" 
+-- vim.opt.guicursor = "" -- Jangan dinyalakan, biar notice beda Normal Mode dan Insert Mode.
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = true 
 vim.opt.spell = true
@@ -101,3 +101,93 @@ vim.keymap.set("n", "<A-j>", ":m .+1<CR>", { unique = true })
 --   desc = "Open Yazi",
 -- })
 
+vim.opt.whichwrap:append("<,>,[,]")
+
+-- Selection Mode seperti Sublime
+vim.opt.selectmode = { "key", "mouse" }
+vim.opt.keymodel = { "startsel", "stopsel" }
+
+vim.keymap.set("i", "<A-BS>", "<C-W>", {
+  desc = "Delete previous word",
+})
+
+vim.keymap.set("i", "<A-Del>", "<C-O>de", {
+  desc = "Delete next word",
+})
+
+vim.keymap.set("i", "<D-BS>", "<C-U>", {
+  desc = "Delete to beginning of line",
+})
+
+vim.keymap.set("i", "<D-Left>", "<Home>", {
+  desc = "Beginning of line",
+})
+
+vim.keymap.set("i", "<D-Right>", "<End>", {
+  desc = "End of line",
+})
+
+vim.keymap.set("n", "<D-Left>", "0", {
+  desc = "Beginning of line",
+})
+
+vim.keymap.set("n", "<D-Right>", "$", {
+  desc = "End of line",
+})
+
+vim.keymap.set("i", "<D-Up>", "<C-Home>", {
+  desc = "Beginning of document",
+})
+
+vim.keymap.set("i", "<D-Down>", "<C-End>", {
+  desc = "End of document",
+})
+
+vim.keymap.set("n", "<D-Up>", "gg", {
+  desc = "Beginning of document",
+})
+
+vim.keymap.set("n", "<D-Down>", "G", {
+  desc = "End of document",
+})
+
+vim.keymap.set("i", "<A-Left>", "<C-Left>", {
+  desc = "Previous word",
+})
+
+vim.keymap.set("i", "<A-Right>", "<C-Right>", {
+  desc = "Next word",
+})
+
+---------------------------
+-- PROMPT BUFFER
+---------------------------
+
+local map = vim.keymap.set
+
+vim.api.nvim_create_user_command("Prompt", function()
+  vim.cmd("enew")
+
+  vim.bo.filetype = "markdown"
+
+  vim.opt_local.wrap = true
+  vim.opt_local.linebreak = true
+  vim.opt_local.breakindent = true
+  vim.opt_local.spell = true
+end, {})
+
+map("n", "<leader>p", "<cmd>Prompt<cr>", {
+  desc = "New prompt",
+})
+
+---------------------------------------------------------------------------
+-- AUTO SAVE WHEN LEAVING A FILE BUFFER
+---------------------------------------------------------------------------
+
+vim.api.nvim_create_autocmd("BufLeave", {
+  callback = function()
+    if vim.bo.buftype == "" and vim.bo.modified then
+      vim.cmd("silent write")
+    end
+  end,
+})

@@ -1,9 +1,9 @@
-# nvim-config
+# NeoVim Configuration
 
-Macbook Pro M4
-MacOs Sequoia 15.7.9
-Shell: zsh
-Terminal: Ghostty
+- MacBook Pro M4
+- macOS Sequoia 15.7.9
+- Shell: zsh
+- Terminal: Ghostty
 
 Kondisi saat `README.md` dibuat:
 

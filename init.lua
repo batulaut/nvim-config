@@ -39,7 +39,7 @@ vim.g.maplocalleader = " "
 vim.opt.number = true
 
 -- Do not show relative line numbers.
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 
 -- Enable true-color support.
 vim.opt.termguicolors = true
@@ -54,6 +54,10 @@ vim.opt.cursorline = true
 -- Always reserve a column for signs such as diagnostics.
 vim.opt.signcolumn = "yes"
 
+-- Font — Only works for Neovide, not Neovim in Terminal.
+if vim.g.neovide then
+  vim.o.guifont = "JetBrainsMono Nerd Font:h14"
+end
 
 -- ---------------------------------------------------------
 -- Text Wrapping & Spelling
@@ -63,7 +67,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.wrap = true
 
 -- Enable spell checking.
-vim.opt.spell = true
+vim.opt.spell = false
 
 -- Prefer breaking wrapped lines at word boundaries.
 vim.opt.linebreak = true

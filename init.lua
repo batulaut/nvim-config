@@ -166,17 +166,11 @@ require("lazy").setup({
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-
     config = function()
-      require("lualine").setup({
-        options = {
-          globalstatus = true,
-        },
-      })
+      require("config.lualine")
     end,
   },
 })
-
 
 -- =========================================================
 -- TELESCOPE KEYMAPS

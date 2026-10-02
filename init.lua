@@ -368,14 +368,20 @@ map("n", "<leader>p", "<cmd>Prompt<cr>", {
 -- AUTO-SAVE
 -- =========================================================
 
--- Automatically save a normal file when leaving its buffer,
--- but only if the buffer has unsaved changes.
+-- Automatically save a modified normal file when leaving its buffer.
 --
--- buftype == "" means this is a normal file buffer rather
--- than a special buffer such as help, terminal, etc.
+-- buftype == "" means this is a normal buffer rather than a
+-- special buffer such as help, terminal, etc.
+--
+-- A filename check prevents unnamed buffers such as :Prompt
+-- from triggering :write and causing "E32: No file name".
 vim.api.nvim_create_autocmd("BufLeave", {
   callback = function()
-    if vim.bo.buftype == "" and vim.bo.modified then
+    local is_normal_buffer = vim.bo.buftype == ""
+    local is_modified = vim.bo.modified
+    local has_filename = vim.fn.expand("%") ~= ""
+
+    if is_normal_buffer and is_modified and has_filename then
       vim.cmd("silent write")
     end
   end,

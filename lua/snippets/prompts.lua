@@ -33,6 +33,10 @@ ls.add_snippets("markdown", {
     i(1),
   }),
   
+  s(";cc", {
+    t("Claude Code"),
+  }),
+  
   s(";compare", {
     t("Bandingkan "),
     i(1, "X"),
@@ -76,10 +80,6 @@ ls.add_snippets("markdown", {
     t({"", "", "Output yang saya inginkan:"}),
     t({"", ""}),
     i(5),
-  }),
-  
-  s(";si", {
-    t("Saya ingin "),
   }),
   
   s(";out", {

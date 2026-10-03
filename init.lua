@@ -170,7 +170,52 @@ require("lazy").setup({
       require("config.lualine")
     end,
   },
+
+
+  -- -------------------------------------------------------
+  -- Blink.cmp — Text Completion
+  -- -------------------------------------------------------
+  
+  {
+    "saghen/blink.cmp",
+
+    dependencies = {
+      "L3MON4D3/LuaSnip",
+    },
+
+    opts = {
+      keymap = {
+        preset = "super-tab",
+      },
+
+      completion = {
+        documentation = {
+          auto_show = false,
+        },
+
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = false,
+          },
+        },
+      },
+
+      sources = {
+        default = {
+          "snippets",
+          "buffer",
+        },
+      },
+
+      snippets = {
+        preset = "luasnip",
+      },
+    },
+  },
 })
+
+require("snippets.prompts")
 
 -- =========================================================
 -- TELESCOPE KEYMAPS

@@ -228,6 +228,7 @@ require("lazy").setup({
 })
 
 require("snippets.prompts")
+require("custom.obsidian")
 
 -- =========================================================
 -- TELESCOPE KEYMAPS

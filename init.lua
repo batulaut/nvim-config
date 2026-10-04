@@ -165,6 +165,17 @@ require("lazy").setup({
 
 
   -- -------------------------------------------------------
+  -- Diffview — See git diff
+  -- -------------------------------------------------------
+
+  {
+    "sindrets/diffview.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+
+  -- -------------------------------------------------------
   -- Lualine — Statusline
   -- -------------------------------------------------------
 
@@ -262,6 +273,26 @@ vim.keymap.set("n", "<leader>fb", builtin.buffers, {
 -- Search Neovim's built-in help.
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {
   desc = "Find help",
+})
+
+
+-- =========================================================
+-- DIFFVIEW KEYMAPS
+-- =========================================================
+
+-- Open Git diff view.
+vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", {
+  desc = "Git diff",
+})
+
+-- Open Git file history.
+vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", {
+  desc = "Git file history",
+})
+
+-- Close Diffview.
+vim.keymap.set("n", "<leader>gc", "<cmd>DiffviewClose<cr>", {
+  desc = "Git diff close",
 })
 
 

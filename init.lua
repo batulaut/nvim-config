@@ -38,7 +38,7 @@ vim.g.maplocalleader = " "
 -- Show absolute line numbers.
 vim.opt.number = true
 
--- Do not show relative line numbers.
+-- Show relative line numbers.
 vim.opt.relativenumber = true
 
 -- Enable true-color support.
@@ -136,6 +136,14 @@ require("lazy").setup({
       require("catppuccin").setup({
         flavour = "macchiato",
         transparent_background = false,
+
+        custom_highlights = function(colors)
+          return {
+            WinSeparator = {
+              fg = colors.blue,
+            },
+          }
+        end,
       })
 
       vim.cmd.colorscheme("catppuccin")

@@ -108,6 +108,12 @@ vim.opt.ignorecase = true
 -- ...unless the search contains uppercase letters.
 vim.opt.smartcase = true
 
+vim.keymap.set("n", "<leader>fp", function()
+  local path = vim.fn.expand("%:p")
+  print(path)
+  vim.fn.setreg("+", path)
+end, { desc = "Show & copy absolute file path" })
+
 
 -- ---------------------------------------------------------
 -- Scrolling

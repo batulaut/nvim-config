@@ -254,6 +254,8 @@ require("lazy").setup({
 
 require("snippets.prompts")
 require("custom.obsidian")
+require("config.git")
+
 
 -- =========================================================
 -- TELESCOPE KEYMAPS
@@ -279,26 +281,6 @@ vim.keymap.set("n", "<leader>fb", builtin.buffers, {
 -- Search Neovim's built-in help.
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {
   desc = "Find help",
-})
-
-
--- =========================================================
--- DIFFVIEW KEYMAPS
--- =========================================================
-
--- Open Git diff view.
-vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", {
-  desc = "Git diff",
-})
-
--- Open Git file history.
-vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", {
-  desc = "Git file history",
-})
-
--- Close Diffview.
-vim.keymap.set("n", "<leader>gc", "<cmd>DiffviewClose<cr>", {
-  desc = "Git diff close",
 })
 
 
@@ -484,32 +466,3 @@ vim.api.nvim_create_autocmd("BufLeave", {
   end,
 })
 
-
-local function hammerspoon(event)
-  vim.fn.jobstart({
-    "open",
-    "-g",
-    "hammerspoon://" .. event,
-  }, {
-    detach = true,
-  })
-end
-
-local function resize_diffview_windows()
-  vim.defer_fn(function()
-    vim.cmd("horizontal wincmd =")
-  end, 300)
-end
-
-require("diffview").setup({
-  hooks = {
-    view_opened = function()
-      hammerspoon("diffview-open")
-      resize_diffview_windows()
-    end,
-
-    view_closed = function()
-      hammerspoon("diffview-close")
-    end,
-  },
-})

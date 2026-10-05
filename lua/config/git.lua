@@ -55,6 +55,10 @@ vim.api.nvim_set_hl(0, "DiffAdd", {
   bg = "#284d3a",
 })
 
+vim.api.nvim_set_hl(0, "DiffChange", {
+    bg = "#3f3b2f",
+})
+
 vim.api.nvim_set_hl(0, "DiffText", {
   bg = "#8a6338",
   fg = "#ffe8b6",

@@ -483,3 +483,33 @@ vim.api.nvim_create_autocmd("BufLeave", {
     end
   end,
 })
+
+
+local function hammerspoon(event)
+  vim.fn.jobstart({
+    "open",
+    "-g",
+    "hammerspoon://" .. event,
+  }, {
+    detach = true,
+  })
+end
+
+local function resize_diffview_windows()
+  vim.defer_fn(function()
+    vim.cmd("horizontal wincmd =")
+  end, 300)
+end
+
+require("diffview").setup({
+  hooks = {
+    view_opened = function()
+      hammerspoon("diffview-open")
+      resize_diffview_windows()
+    end,
+
+    view_closed = function()
+      hammerspoon("diffview-close")
+    end,
+  },
+})

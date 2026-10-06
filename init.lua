@@ -56,7 +56,7 @@ vim.opt.signcolumn = "yes"
 
 -- Font — Only works for Neovide, not Neovim in Terminal.
 if vim.g.neovide then
-  vim.o.guifont = "JetBrainsMono Nerd Font:h14"
+  vim.o.guifont = "JetBrainsMonoNL Nerd Font:h14"
 end
 
 -- ---------------------------------------------------------

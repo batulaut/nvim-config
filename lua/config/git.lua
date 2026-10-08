@@ -4,23 +4,10 @@
 -- =========================================================
 
 -- ---------------------------------------------------------
--- Hammerspoon Integration
--- ---------------------------------------------------------
-
-local function hammerspoon(event)
-  vim.fn.jobstart({
-    "open",
-    "-g",
-    "hammerspoon://" .. event,
-  }, {
-    detach = true,
-  })
-end
-
-
--- ---------------------------------------------------------
 -- Diffview Window Layout
 -- ---------------------------------------------------------
+
+local hammerspoon = require("config.hammerspoon")
 
 local function resize_diffview_windows()
   vim.defer_fn(function()
@@ -36,12 +23,12 @@ end
 require("diffview").setup({
   hooks = {
     view_opened = function()
-      hammerspoon("diffview-open")
+      hammerspoon.event("diffview-open")
       resize_diffview_windows()
     end,
 
     view_closed = function()
-      hammerspoon("diffview-close")
+      hammerspoon.event("diffview-close")
     end,
   },
 })

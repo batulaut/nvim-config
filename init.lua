@@ -205,8 +205,13 @@ require("lazy").setup({
     "saghen/blink.cmp",
 
     dependencies = {
+      "saghen/blink.lib",
       "L3MON4D3/LuaSnip",
     },
+
+    build = function()
+      require("blink.cmp").build():pwait()
+    end,
 
     opts = {
       keymap = {
@@ -224,6 +229,11 @@ require("lazy").setup({
             auto_insert = false,
           },
         },
+      },
+
+      -- For now, use Lua fuzzy matcher instead of the native Rust matcher.
+      fuzzy = {
+        implementation = "lua",
       },
 
       sources = {

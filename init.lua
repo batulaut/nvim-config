@@ -136,6 +136,7 @@ vim.keymap.set("n", "k", "gk", {
   desc = "Move up by visual line",
 })
 
+
 -- =========================================================
 -- PLUGINS
 -- =========================================================
@@ -430,6 +431,15 @@ vim.keymap.set("i", "<A-Left>", "<C-Left>", {
 
 vim.keymap.set("i", "<A-Right>", "<C-Right>", {
   desc = "Next word",
+})
+
+
+-- ---------------------------------------------------------
+-- Alternative Escape From Insert Mode
+-- ---------------------------------------------------------
+
+vim.keymap.set("i", "jj", "<Esc>", {
+  desc = "Change Insert Mode to Normal Mode",
 })
 
 

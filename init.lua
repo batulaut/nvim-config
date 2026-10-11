@@ -123,6 +123,19 @@ end, { desc = "Show & copy absolute file path" })
 vim.opt.scrolloff = 8
 
 
+-- ---------------------------------------------------------
+-- Line Movement
+-- ---------------------------------------------------------
+
+-- Move by visual lines when text is wrapped.
+vim.keymap.set("n", "j", "gj", {
+  desc = "Move down by visual line",
+})
+
+vim.keymap.set("n", "k", "gk", {
+  desc = "Move up by visual line",
+})
+
 -- =========================================================
 -- PLUGINS
 -- =========================================================

@@ -128,11 +128,11 @@ vim.opt.scrolloff = 8
 -- ---------------------------------------------------------
 
 -- Move by visual lines when text is wrapped.
-vim.keymap.set("n", "j", "gj", {
+vim.keymap.set("n", "J", "gj", {
   desc = "Move down by visual line",
 })
 
-vim.keymap.set("n", "k", "gk", {
+vim.keymap.set("n", "K", "gk", {
   desc = "Move up by visual line",
 })
 

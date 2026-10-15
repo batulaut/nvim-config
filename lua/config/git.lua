@@ -20,6 +20,14 @@ end
 -- Diffview Setup
 -- ---------------------------------------------------------
 
+local function next_change()
+  vim.cmd("normal! ]c")
+end
+
+local function prev_change()
+  vim.cmd("normal! [c")
+end
+
 require("diffview").setup({
   hooks = {
     view_opened = function()
@@ -30,6 +38,23 @@ require("diffview").setup({
     view_closed = function()
       hammerspoon.event("diffview-close")
     end,
+  },
+
+  keymaps = {
+    view = {
+      {
+        "n",
+        "S",
+        next_change,
+        { desc = "Next diff change" },
+      },
+      {
+        "n",
+        "W",
+        prev_change,
+        { desc = "Previous diff change" },
+      },
+    },
   },
 })
 

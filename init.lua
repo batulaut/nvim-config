@@ -316,6 +316,8 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, {
 -- Move Lines
 -- ---------------------------------------------------------
 
+vim.g.neovide_input_macos_option_key_is_meta = "only_left"
+
 -- Option + Up/Down: move the current line.
 vim.keymap.set("n", "<A-Up>", ":m .-2<CR>", {
   unique = true,

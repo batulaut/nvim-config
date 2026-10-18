@@ -365,6 +365,10 @@ vim.opt.selectmode = { "key", "mouse" }
 -- Start/stop selection according to the current cursor movement.
 vim.opt.keymodel = { "startsel", "stopsel" }
 
+-- Clear search highlight
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>", {
+  desc = "Clear search highlight",
+})
 
 -- ---------------------------------------------------------
 -- Word Deletion

@@ -389,6 +389,12 @@ vim.keymap.set("i", "<D-BS>", "<C-U>", {
   desc = "Delete to beginning of line",
 })
 
+-- Pindahkan undo dari u ke U
+vim.keymap.set("n", "U", "u", { desc = "Undo" })
+
+-- Nonaktifkan tombol u
+vim.keymap.set("n", "u", "<Nop>")
+
 
 -- ---------------------------------------------------------
 -- Beginning / End of Line

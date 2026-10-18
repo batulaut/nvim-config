@@ -1,16 +1,23 @@
-# NeoVim Configuration
+# My NeoVim Configuration
 
-- MacBook Pro M4
-- macOS Sequoia 15.7.9
+I am trying to optimize my NeoVim — mainly for writing AI prompts in markdown syntax.
+
+## Environment
+
+- Mac M4
+- MacOS Sequoia 15.7.9
 - Shell: zsh
 - Terminal: Ghostty
+- NVIM v0.12.5
+- Neovide 0.16.2
 
-Kondisi saat `README.md` dibuat:
+Installed:
 
 ```
 ❯ brew leaves
 
 bat
+fd
 ffmpeg
 fzf
 micro
@@ -22,3 +29,4 @@ terminal-notifier
 trash
 yazi
 ```
+

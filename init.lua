@@ -360,6 +360,8 @@ require("lazy").setup({
       },
     },
   },
+
+  { import = "plugins" },
 })
 
 require("snippets.prompts")

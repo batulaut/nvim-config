@@ -2,6 +2,10 @@
 
 I am trying to optimize my NeoVim — mainly for writing AI prompts in markdown syntax.
 
+## Structure
+
+How this config is organized, and where to put new things: see [STRUCTURE.md](STRUCTURE.md).
+
 ## Environment
 
 - Mac M4

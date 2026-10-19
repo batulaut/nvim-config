@@ -292,6 +292,25 @@ require("config.git")
 
 
 -- =========================================================
+-- HAMMERSPOON
+-- =========================================================
+
+-- Enlarge Neovide
+vim.keymap.set("n", "<leader>nl", function()
+  require("config.hammerspoon").event("neovide-large")
+end, {
+  desc = "Enlarge Neovide",
+})
+
+-- Restore Neovide size
+vim.keymap.set("n", "<leader>nn", function()
+  require("config.hammerspoon").event("neovide-normal")
+end, {
+  desc = "Restore Neovide size",
+})
+
+
+-- =========================================================
 -- TELESCOPE
 -- =========================================================
 
@@ -302,8 +321,11 @@ vim.keymap.set("n", "<leader>ff", builtin.find_files, {
   desc = "Find files",
 })
 
--- Search text across the project using ripgrep.
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {
+-- Live grep: enlarge Neovide before searching
+vim.keymap.set("n", "<leader>fg", function()
+  require("config.hammerspoon").event("neovide-large")
+  builtin.live_grep()
+end, {
   desc = "Live grep / rg",
 })
 

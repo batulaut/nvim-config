@@ -31,12 +31,12 @@ end
 require("diffview").setup({
   hooks = {
     view_opened = function()
-      hammerspoon.event("diffview-open")
+      hammerspoon.event("neovide-large")
       resize_diffview_windows()
     end,
 
     view_closed = function()
-      hammerspoon.event("diffview-close")
+      hammerspoon.event("neovide-normal")
     end,
   },
 

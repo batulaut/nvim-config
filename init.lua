@@ -230,6 +230,7 @@ require("lazy").setup({
     opts = {
       keymap = {
         preset = "super-tab",
+        ["<CR>"] = { "accept", "fallback" },
       },
 
       completion = {
@@ -493,13 +494,7 @@ vim.keymap.set("i", "<A-Right>", "<C-Right>", {
 -- Alternative Escape From Insert Mode
 -- ---------------------------------------------------------
 
-vim.keymap.set("i", "jjj", "<Esc>", {
-  desc = "Change Insert Mode to Normal Mode",
-})
-vim.keymap.set("i", "kkk", "<Esc>", {
-  desc = "Change Insert Mode to Normal Mode",
-})
-vim.keymap.set("i", "lll", "<Esc>", {
+vim.keymap.set("i", "jj", "<Esc>", {
   desc = "Change Insert Mode to Normal Mode",
 })
 

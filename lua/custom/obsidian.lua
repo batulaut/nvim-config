@@ -1,3 +1,8 @@
+-- =========================================================
+-- OBSIDIAN FRONTMATTER
+-- =========================================================
+-- A new .md file created inside the Obsidian vault starts with
+-- a "created:" frontmatter block. Files elsewhere are untouched.
 
 local obsidian_vault = vim.fn.expand("~/Work/Obsidian/victor-obsd")
 
@@ -6,7 +11,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   callback = function()
     local file = vim.fn.expand("%:p")
 
-    -- Hanya aktif untuk file di dalam Obsidian vault
+    -- Only for files inside the Obsidian vault.
     if not vim.startswith(file, obsidian_vault .. "/") then
       return
     end

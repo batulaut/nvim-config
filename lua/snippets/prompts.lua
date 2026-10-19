@@ -1,22 +1,14 @@
+-- =========================================================
+-- PROMPT SNIPPETS (Markdown)
+-- =========================================================
+-- Snippet definitions only. Loaded by the LuaSnip spec in
+-- lua/plugins/completion.lua, which also maps <C-n>/<C-p>
+-- for cycling the options of ;out.
+--
+-- Type the trigger (e.g. ";ask") in a Markdown buffer and
+-- accept it from the completion menu.
+
 local ls = require("luasnip")
-
-vim.keymap.set({ "i", "s" }, "<C-n>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
-end, {
-  silent = true,
-  desc = "Next snippet choice",
-})
-
-vim.keymap.set({ "i", "s" }, "<C-p>", function()
-  if ls.choice_active() then
-    ls.change_choice(-1)
-  end
-end, {
-  silent = true,
-  desc = "Previous snippet choice",
-})
 
 local s = ls.snippet
 local t = ls.text_node
@@ -24,19 +16,15 @@ local i = ls.insert_node
 local c = ls.choice_node
 
 ls.add_snippets("markdown", {
-  -- -------------------------------------------------------
-  -- Prompt structure
-  -- -------------------------------------------------------
-  
   s(";ask", {
     t("Yang ingin saya tanyakan: "),
     i(1),
   }),
-  
+
   s(";cc", {
     t("Claude Code"),
   }),
-  
+
   s(";compare", {
     t("Bandingkan "),
     i(1, "X"),
@@ -49,17 +37,17 @@ ls.add_snippets("markdown", {
     t({"", "- "}),
     i(5),
   }),
-  
+
   s(";ctx", {
     t("Konteks saya saat ini: "),
     i(1),
   }),
-  
+
   s(";goal", {
     t("Tujuan saya: "),
     i(1),
   }),
-  
+
   s(";prompt", {
     t("Konteks:"),
     t({"", ""}),
@@ -81,7 +69,7 @@ ls.add_snippets("markdown", {
     t({"", ""}),
     i(5),
   }),
-  
+
   s(";out", {
     c(1, {
       t("Ringkas dan langsung ke poin utama."),

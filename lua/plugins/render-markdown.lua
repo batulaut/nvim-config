@@ -1,3 +1,7 @@
+-- =========================================================
+-- RENDER-MARKDOWN — In-buffer Markdown rendering
+-- =========================================================
+-- Off by default; toggle per session with <leader>me / <leader>md.
 
 return {
   {

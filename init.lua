@@ -292,7 +292,7 @@ require("config.git")
 
 
 -- =========================================================
--- TELESCOPE KEYMAPS
+-- TELESCOPE
 -- =========================================================
 
 local builtin = require("telescope.builtin")
@@ -317,6 +317,17 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, {
   desc = "Find help",
 })
 
+-- Wrap text in Telescope's preview window
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TelescopePreviewerLoaded",
+  callback = function(args)
+    if args.data and args.data.filetype ~= "help" then
+      vim.wo.wrap = true
+      vim.wo.linebreak = true
+      vim.wo.breakindent = true
+    end
+  end,
+})
 
 -- =========================================================
 -- MACOS / SUBLIME COMPATIBILITY

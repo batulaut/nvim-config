@@ -182,6 +182,30 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
     },
   },
+  {
+    "nvim-telescope/telescope-project.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("telescope").setup({
+        extensions = {
+          project = {
+            base_dirs = {
+              { path = "~/Documents/Github/plutoman-supabase" },
+              { path = "~/Documents/Github/plutoman-supabase/claude_tmp/external-clients/plutonet-android" },
+            },
+            hidden_files = false,
+            order_by = "recent",
+            search_by = { "title", "path" },
+            cd_scope = { "global" },
+          },
+        },
+      })
+
+      require("telescope").load_extension("project")
+    end,
+  },
 
 
   -- -------------------------------------------------------
@@ -402,6 +426,12 @@ vim.api.nvim_create_autocmd("User", {
     end
   end,
 })
+
+-- Switch project
+vim.keymap.set("n", "<leader>sp", function()
+  require("telescope").extensions.project.project({})
+end, { desc = "Switch project" })
+
 
 -- =========================================================
 -- MACOS / SUBLIME COMPATIBILITY

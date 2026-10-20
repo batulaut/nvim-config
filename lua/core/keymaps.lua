@@ -58,12 +58,17 @@ end, { desc = "Show & copy absolute file path" })
 -- Move Lines
 -- ---------------------------------------------------------
 
--- Option + Up/Down (or Option + K/J): move the current line.
+-- Option + Up/Down (or Option + K/J): move the current line, or
+-- the selected lines in Visual mode (selection is kept).
+--   <cmd>:    runs without flashing the command line
+--   silent!:  no E16 error at the first/last line
 -- unique = true: fail loudly if something else already uses these keys.
-map("n", "<A-Up>", ":m .-2<CR>", { unique = true })
-map("n", "<A-Down>", ":m .+1<CR>", { unique = true })
-map("n", "<A-k>", ":m .-2<CR>", { unique = true })
-map("n", "<A-j>", ":m .+1<CR>", { unique = true })
+local move_up = "<cmd>silent! m .-2<CR>"
+local move_down = "<cmd>silent! m .+1<CR>"
+map("n", "<A-Up>", move_up, { unique = true, desc = "Move line up" })
+map("n", "<A-Down>", move_down, { unique = true, desc = "Move line down" })
+map("n", "<A-k>", move_up, { unique = true, desc = "Move line up" })
+map("n", "<A-j>", move_down, { unique = true, desc = "Move line down" })
 
 -- Visual mode needs ":" (not <cmd>) so the '< '> marks are updated.
 local move_sel_up = ":<C-u>silent! '<,'>m '<-2<CR>gv"

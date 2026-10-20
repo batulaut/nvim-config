@@ -22,6 +22,7 @@ require("core.autocmds")
 
 -- My own small features (no plugin behind them).
 require("custom.neovide")
+require("custom.move_lines")
 require("custom.sentences")
 require("custom.prompt")
 require("custom.obsidian")

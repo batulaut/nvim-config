@@ -54,30 +54,7 @@ end, { desc = "Show & copy absolute file path" })
 -- reach Neovim inside Neovide; terminals tend to keep them.
 -- Option-as-Meta for Neovide is set in lua/custom/neovide.lua.
 
--- ---------------------------------------------------------
--- Move Lines
--- ---------------------------------------------------------
-
--- Option + Up/Down (or Option + K/J): move the current line, or
--- the selected lines in Visual mode (selection is kept).
---   <cmd>:    runs without flashing the command line
---   silent!:  no E16 error at the first/last line
--- unique = true: fail loudly if something else already uses these keys.
-local move_up = "<cmd>silent! m .-2<CR>"
-local move_down = "<cmd>silent! m .+1<CR>"
-map("n", "<A-Up>", move_up, { unique = true, desc = "Move line up" })
-map("n", "<A-Down>", move_down, { unique = true, desc = "Move line down" })
-map("n", "<A-k>", move_up, { unique = true, desc = "Move line up" })
-map("n", "<A-j>", move_down, { unique = true, desc = "Move line down" })
-
--- Visual mode needs ":" (not <cmd>) so the '< '> marks are updated.
-local move_sel_up = ":<C-u>silent! '<,'>m '<-2<CR>gv"
-local move_sel_down = ":<C-u>silent! '<,'>m '>+1<CR>gv"
-map("x", "<A-Up>", move_sel_up, { unique = true, silent = true, desc = "Move selection up" })
-map("x", "<A-Down>", move_sel_down, { unique = true, silent = true, desc = "Move selection down" })
-map("x", "<A-k>", move_sel_up, { unique = true, silent = true, desc = "Move selection up" })
-map("x", "<A-j>", move_sel_down, { unique = true, silent = true, desc = "Move selection down" })
-
+-- Moving lines with Option + Up/Down (or K/J): lua/custom/move_lines.lua.
 
 -- ---------------------------------------------------------
 -- Word Navigation & Deletion (Insert mode)

@@ -55,7 +55,7 @@ Urutan di `init.lua` disengaja:
 
 1. **Leader** diset paling awal — keymap `<leader>…` yang dibuat sebelum ini akan memakai leader lama.
 2. **`core.options`** — tidak bergantung pada apa pun.
-3. **`core.lazy`** — memuat semua plugin. Colorscheme punya `priority = 1000` sehingga dimuat lebih dulu; karena itu highlight diff di `plugins/git.lua` tidak tertimpa.
+3. **`core.lazy`** — memuat semua plugin. Colorscheme punya `priority = 1000` sehingga dimuat lebih dulu.
 4. **`core.keymaps`, `core.autocmds`** — setelah plugin, supaya mapping global ini yang terakhir menang.
 5. **`custom.*`** — fitur sendiri.
 
@@ -72,7 +72,7 @@ Catatan: sebagian besar plugin di sini **tidak lazy** (dimuat saat startup), sam
 | Menambah opsi | `core/options.lua`, di bagian yang sesuai. |
 | Menambah fitur sendiri | Buat `lua/custom/<fitur>.lua` (command/autocmd/keymap-nya di file itu), lalu tambahkan `require("custom.<fitur>")` di `init.lua`. |
 | Menambah snippet | `lua/snippets/prompts.lua`, atau file baru di `lua/snippets/` + `require` di `config` LuaSnip (`plugins/completion.lua`). |
-| Mengubah tampilan/warna | `plugins/colorscheme.lua` (`custom_highlights`). Warna diff khusus ada di `plugins/git.lua`. |
+| Mengubah tampilan/warna | `plugins/colorscheme.lua` (`custom_highlights`), termasuk warna diff. Jangan pakai `nvim_set_hl` di file lain — hasilnya hilang saat `:colorscheme` dijalankan ulang. |
 
 ## Rekomendasi kebiasaan
 

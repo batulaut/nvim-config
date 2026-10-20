@@ -51,6 +51,8 @@ end, { desc = "Split before current sentence" })
 
 -- Break the current line after every ". " (only periods,
 -- unlike <leader>jk which also handles "!" and "?").
+--   keeppatterns: don't overwrite the last search (no stray highlight)
+--   e flag:       do nothing (no E486 error) when there is no ". "
 vim.keymap.set("n", "<leader>jj", function()
-  vim.cmd([[s/\.\s\+/.\r/g]])
+  vim.cmd([[keeppatterns s/\.\s\+/.\r/ge]])
 end, { desc = "Split all sentences into lines" })

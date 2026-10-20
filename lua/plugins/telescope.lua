@@ -25,8 +25,13 @@ return {
           -- telescope-project.nvim: projects listed for <leader>sp.
           project = {
             base_dirs = {
-              { path = "~/Documents/Github/plutoman-supabase" },
-              { path = "~/Documents/Github/plutoman-supabase/claude_tmp/external-clients/plutonet-android" },
+              -- If the folder is not a git repo, then use
+              -- `:lua require("telescope._extensions.project.actions").add_project_path(vim.fn.expand("~/Documents/Sublime-Dump"))`
+              { path = "~/.config/nvim" },
+              { path = "~/Documents/GitHub/plutoman-supabase" },
+              { path = "~/Documents/GitHub/plutoman-supabase/claude_tmp/external-clients/plutonet-android" },
+              { path = "~/Documents/Sublime-Dump" },
+              { path = "~/Work/Obsidian/victor-obsd" },
             },
             hidden_files = false,
             order_by = "recent",

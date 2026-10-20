@@ -2,7 +2,8 @@
 -- COMPLETION — blink.cmp + LuaSnip
 -- =========================================================
 -- blink.cmp shows the completion menu; LuaSnip expands snippets.
--- Snippet content itself lives in lua/snippets/.
+-- The content lives in data/ and reloads without a restart:
+--   data/snippets/<filetype>.lua   snippets
 
 return {
   -- -------------------------------------------------------
@@ -97,7 +98,8 @@ return {
     config = function()
       local ls = require("luasnip")
 
-      -- Cycle through the options of a choice node (e.g. ;out).
+      -- Cycle through the options of a choice node, i.e. a
+      -- snippet that offers several alternatives at one spot.
       vim.keymap.set({ "i", "s" }, "<C-n>", function()
         if ls.choice_active() then
           ls.change_choice(1)
@@ -116,8 +118,13 @@ return {
         desc = "Previous snippet choice",
       })
 
-      -- My snippets.
-      require("snippets.prompts")
+      -- Load data/snippets/<filetype>.lua on demand and reload a
+      -- file whenever it changes: on save inside Neovim (autocmd)
+      -- or from any other editor (libuv file watcher).
+      require("luasnip.loaders.from_lua").lazy_load({
+        paths = { require("custom.datafile").path("snippets") },
+        fs_event_providers = { autocmd = true, libuv = true },
+      })
     end,
   },
 }

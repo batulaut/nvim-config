@@ -1,20 +1,21 @@
 -- =========================================================
--- PROMPT SNIPPETS (Markdown)
+-- MARKDOWN SNIPPETS
 -- =========================================================
--- Snippet definitions only. Loaded by the LuaSnip spec in
--- lua/plugins/completion.lua, which also maps <C-n>/<C-p>
--- for cycling the options of ;out.
+-- Loaded by LuaSnip (see lua/plugins/completion.lua). Every
+-- file in data/snippets/ is named after a filetype; this one
+-- applies to Markdown buffers.
 --
--- Type the trigger (e.g. ";ask") in a Markdown buffer and
--- accept it from the completion menu.
+-- Saving this file inside Neovim reloads it immediately, and
+-- edits from another editor are picked up too — no restart.
+--
+-- Type the trigger (e.g. ";ask") and accept it from the
+-- completion menu. Helpers such as s, t, i, c and fmt are
+-- provided by LuaSnip; nothing needs to be required here.
+--   s(trigger, nodes)  a snippet
+--   t("text")          fixed text ({ "a", "b" } = two lines)
+--   i(1)               cursor stop; Tab jumps to the next one
 
-local ls = require("luasnip")
-
-local s = ls.snippet
-local t = ls.text_node
-local i = ls.insert_node
-
-ls.add_snippets("markdown", {
+return {
   s(";ask", {
     t("Yang ingin saya tanyakan: "),
     i(1),
@@ -61,5 +62,5 @@ ls.add_snippets("markdown", {
   s(";tcl", {
     t("Tolong cek lagi di kode."),
     i(1),
-  })
-})
+  }),
+}

@@ -65,6 +65,14 @@ map("n", "<A-Down>", ":m .+1<CR>", { unique = true })
 map("n", "<A-k>", ":m .-2<CR>", { unique = true })
 map("n", "<A-j>", ":m .+1<CR>", { unique = true })
 
+-- Visual mode needs ":" (not <cmd>) so the '< '> marks are updated.
+local move_sel_up = ":<C-u>silent! '<,'>m '<-2<CR>gv"
+local move_sel_down = ":<C-u>silent! '<,'>m '>+1<CR>gv"
+map("x", "<A-Up>", move_sel_up, { unique = true, silent = true, desc = "Move selection up" })
+map("x", "<A-Down>", move_sel_down, { unique = true, silent = true, desc = "Move selection down" })
+map("x", "<A-k>", move_sel_up, { unique = true, silent = true, desc = "Move selection up" })
+map("x", "<A-j>", move_sel_down, { unique = true, silent = true, desc = "Move selection down" })
+
 
 -- ---------------------------------------------------------
 -- Word Navigation & Deletion (Insert mode)

@@ -1,0 +1,20 @@
+# Folders offered by <leader>sp (Switch project).
+# One path per line; "~" is allowed. Lines starting with "#"
+# are ignored.
+#
+# Changes apply the next time <leader>sp is opened — no restart.
+# Removing a line does NOT remove the project from the picker:
+# select it there and press <C-d> (Insert mode) or d (Normal mode).
+
+[git]
+# Searched for git repositories: the folder itself and up to
+# 3 levels below it. A folder that merely CONTAINS repos
+# (e.g. ~/Documents/GitHub) also works.
+~/.config/nvim
+~/Documents/GitHub/plutoman-supabase
+~/Documents/GitHub/plutoman-supabase/claude_tmp/external-clients/plutonet-android
+
+[folder]
+# Added as-is; no git needed.
+~/Documents/Sublime-Dump
+~/Work/Obsidian/victor-obsd

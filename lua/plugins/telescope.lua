@@ -16,6 +16,7 @@ return {
       local telescope = require("telescope")
       local builtin = require("telescope.builtin")
       local hammerspoon = require("custom.hammerspoon")
+      local datafile = require("custom.datafile")
 
       -- ---------------------------------------------------
       -- Setup
@@ -24,16 +25,9 @@ return {
       telescope.setup({
         extensions = {
           -- telescope-project.nvim: projects listed for <leader>sp.
+          -- The folders come from data/projects.txt (see below),
+          -- not from `base_dirs`.
           project = {
-            base_dirs = {
-              -- If the folder is not a git repo, then use
-              -- `:lua require("telescope._extensions.project.actions").add_project_path(vim.fn.expand("~/Documents/Sublime-Dump"))`
-              { path = "~/.config/nvim" },
-              { path = "~/Documents/GitHub/plutoman-supabase" },
-              { path = "~/Documents/GitHub/plutoman-supabase/claude_tmp/external-clients/plutonet-android" },
-              { path = "~/Documents/Sublime-Dump" },
-              { path = "~/Work/Obsidian/victor-obsd" },
-            },
             hidden_files = false,
             order_by = "recent",
             search_by = { "title", "path" },
@@ -49,6 +43,53 @@ return {
 
       telescope.load_extension("project")
       telescope.load_extension("undo")
+
+      -- ---------------------------------------------------
+      -- Project folders from data/projects.txt
+      -- ---------------------------------------------------
+      -- telescope-project keeps its own list of projects in
+      -- ~/.local/share/nvim/telescope-projects.txt. This adds
+      -- the folders from data/projects.txt to that list:
+      --   [git]     searched for repos (what `base_dirs` does)
+      --   [folder]  added as-is
+      -- Folders already in the list are left alone, so a
+      -- project deleted in the picker is not brought back.
+      --
+      -- Uses telescope-project internals (no public API for
+      -- this); if a plugin update breaks it, look here first.
+      local project_git = require("telescope._extensions.project.git")
+
+      local PROJECTS_FILE = "projects.txt"
+      local synced_mtime = nil
+
+      local function sync_projects()
+        local mtime = datafile.mtime(PROJECTS_FILE)
+        if mtime == synced_mtime then
+          return
+        end
+        synced_mtime = mtime
+
+        local git_dirs, folders = {}, {}
+        local section = nil
+        for _, entry in ipairs(datafile.read_lines(PROJECTS_FILE)) do
+          if entry == "[git]" or entry == "[folder]" then
+            section = entry
+          elseif section == "[git]" then
+            git_dirs[#git_dirs + 1] = { path = entry }
+          elseif section == "[folder]" then
+            local path = vim.fs.normalize(entry)
+            if vim.fn.isdirectory(path) == 1 then
+              folders[#folders + 1] = path
+            end
+          end
+        end
+
+        -- Missing folders are skipped silently (2nd argument).
+        project_git.update_git_repos(git_dirs, true)
+        project_git.save_git_repos(project_git.parse_git_repo_paths(folders))
+      end
+
+      sync_projects()
 
       -- Wrap text in the preview window (except for help pages).
       vim.api.nvim_create_autocmd("User", {
@@ -93,6 +134,7 @@ return {
       map("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
 
       map("n", "<leader>sp", function()
+        sync_projects()
         telescope.extensions.project.project({})
       end, { desc = "Switch project" })
 

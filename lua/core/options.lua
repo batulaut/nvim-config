@@ -61,6 +61,11 @@ vim.opt.mouse = "a"
 -- Use the system clipboard for yank/delete/paste operations.
 vim.opt.clipboard = "unnamedplus"
 
+-- Keep undo history after closing a file (stored in
+-- ~/.local/state/nvim/undo/). Pairs with auto-save: saving no
+-- longer means losing the ability to undo.
+vim.opt.undofile = true
+
 
 -- ---------------------------------------------------------
 -- Search

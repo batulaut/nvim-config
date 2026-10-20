@@ -8,13 +8,14 @@
 -- Auto-save
 -- ---------------------------------------------------------
 
--- Save a modified file automatically when leaving its buffer.
+-- Save a modified file automatically when leaving its buffer
+-- (BufLeave) or when switching to another app (FocusLost).
 --
 -- Skipped for:
 -- - special buffers (help, terminal, …): buftype ~= ""
 -- - unnamed buffers such as :Prompt, which would otherwise
 --   fail with "E32: No file name".
-vim.api.nvim_create_autocmd("BufLeave", {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   callback = function()
     local is_normal_buffer = vim.bo.buftype == ""
     local is_modified = vim.bo.modified

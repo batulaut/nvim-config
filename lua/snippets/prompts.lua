@@ -13,7 +13,6 @@ local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
-local c = ls.choice_node
 
 ls.add_snippets("markdown", {
   s(";ask", {
@@ -21,21 +20,13 @@ ls.add_snippets("markdown", {
     i(1),
   }),
 
-  s(";cc", {
-    t("Claude Code"),
+  s(";cb", {
+    t("Sebelum mulai, cek dulu kondisi branch terbaru saat ini."),
+    i(1),
   }),
 
-  s(";compare", {
-    t("Bandingkan "),
-    i(1, "X"),
-    t(" dan "),
-    i(2, "Y"),
-    t({" berdasarkan:", "- "}),
-    i(3),
-    t({"", "- "}),
-    i(4),
-    t({"", "- "}),
-    i(5),
+  s(";cc", {
+    t("Claude Code"),
   }),
 
   s(";ctx", {
@@ -48,35 +39,27 @@ ls.add_snippets("markdown", {
     i(1),
   }),
 
-  s(";prompt", {
-    t("Konteks:"),
-    t({"", ""}),
+  s(";jua", {
+    t("Jangan ubah apapun dulu sebelum saya memintanya secara eksplisit."),
     i(1),
-
-    t({"", "", "Tujuan:"}),
-    t({"", ""}),
-    i(2),
-
-    t({"", "", "Yang sudah saya coba:"}),
-    t({"", ""}),
-    i(3),
-
-    t({"", "", "Masalah / pertanyaan:"}),
-    t({"", ""}),
-    i(4),
-
-    t({"", "", "Output yang saya inginkan:"}),
-    t({"", ""}),
-    i(5),
   }),
 
-  s(";out", {
-    c(1, {
-      t("Ringkas dan langsung ke poin utama."),
-      t("Jelaskan langkah demi langkah."),
-      t("Gunakan contoh konkret."),
-      t("Gunakan tabel jika membantu perbandingan."),
-      t("Berikan penjelasan yang mendalam."),
+  s(";smk", {
+    t({
+      "Silakan mulai kerja.",
+      "Jika ada temuan atau ambiguitas selama kerja, yang sifatnya tidak memblokir, langsung catat ke dokumen.",
+      "Kalau ada yang memblokir, pause dulu untuk tanyakan ke saya.",
     }),
+    i(1),
+  }),
+
+  s(";tisa", {
+    t("Tetap ikuti semua aturan yang sudah ada (`CLAUDE.md` dan dokumen lain yang relevan.)"),
+    i(1),
+  }),
+
+  s(";tcl", {
+    t("Tolong cek lagi di kode."),
+    i(1),
   })
 })

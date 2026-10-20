@@ -20,6 +20,21 @@ return {
             WinSeparator = {
               fg = colors.blue,
             },
+
+            -- Diff colors (Diffview and :diffthis). Defined here,
+            -- not in plugins/git.lua, so they survive re-running
+            -- :colorscheme.
+            DiffAdd = {
+              bg = "#284d3a",
+            },
+            DiffChange = {
+              bg = "#3f3b2f",
+            },
+            DiffText = {
+              bg = "#8a6338",
+              fg = "#ffe8b6",
+              style = { "bold" },
+            },
           }
         end,
       })

@@ -1,6 +1,7 @@
 -- =========================================================
 -- DIFFVIEW — Git diff & file history
 -- =========================================================
+-- Diff colors are set in plugins/colorscheme.lua.
 
 return {
   {
@@ -59,27 +60,6 @@ return {
             },
           },
         },
-      })
-
-      -- ---------------------------------------------------
-      -- Diff Highlights
-      -- ---------------------------------------------------
-      -- Set after the colorscheme (catppuccin has priority 1000,
-      -- so it is already applied). Running :colorscheme again
-      -- later will reset these.
-
-      vim.api.nvim_set_hl(0, "DiffAdd", {
-        bg = "#284d3a",
-      })
-
-      vim.api.nvim_set_hl(0, "DiffChange", {
-        bg = "#3f3b2f",
-      })
-
-      vim.api.nvim_set_hl(0, "DiffText", {
-        bg = "#8a6338",
-        fg = "#ffe8b6",
-        bold = true,
       })
 
       -- ---------------------------------------------------

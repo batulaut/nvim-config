@@ -24,9 +24,16 @@ map("n", "u", "<Nop>")
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 
 -- J/K move by visual line, which matters with wrapped text.
--- (This replaces the default J = join lines and K = keyword help.)
 map("n", "J", "gj", { desc = "Move down by visual line" })
 map("n", "K", "gk", { desc = "Move up by visual line" })
+
+-- The original J/K, moved behind leader:
+--   <leader>J  join the next line onto this one (3<leader>J joins 3 lines)
+--   <leader>K  help for the word under the cursor (e.g. on `scrolloff`
+--              in a .lua file it opens :help 'scrolloff')
+-- In Visual mode plain J still joins the selected lines.
+map("n", "<leader>J", "J", { desc = "Join lines" })
+map("n", "<leader>K", "K", { desc = "Help for word under cursor" })
 
 
 -- ---------------------------------------------------------

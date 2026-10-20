@@ -4,6 +4,7 @@
 -- blink.cmp shows the completion menu; LuaSnip expands snippets.
 -- The content lives in data/ and reloads without a restart:
 --   data/snippets/<filetype>.lua   snippets
+--   data/words.txt                 my own words/terms
 
 return {
   -- -------------------------------------------------------
@@ -58,6 +59,7 @@ return {
       sources = {
         default = {
           "snippets",
+          "words",
           "buffer",
         },
 
@@ -65,6 +67,14 @@ return {
           -- Rank snippets above buffer words.
           snippets = {
             score_offset = 10,
+          },
+
+          -- My own words from data/words.txt (lua/custom/blink_words.lua),
+          -- ranked between snippets and buffer words.
+          words = {
+            name = "Words",
+            module = "custom.blink_words",
+            score_offset = 5,
           },
 
           -- Suggest words from all normal (file) buffers, not

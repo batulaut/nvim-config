@@ -1,0 +1,12 @@
+# Words and terms offered by the completion menu (blink.cmp),
+# in every buffer. One entry per line; spaces are allowed.
+# Lines starting with "#" are ignored.
+#
+# Changes apply on the next completion — no restart needed.
+# For text that should expand into something else (";cc" →
+# "Claude Code"), use a snippet in data/snippets/ instead.
+
+Claude Code
+Neovim
+Neovide
+Ini adalah contoh kalimat untuk autocomplete.

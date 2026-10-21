@@ -32,7 +32,7 @@ lua/
     blink_words.lua       Helper*: sumber blink.cmp untuk data/words.txt
 data/                     Isi yang sering diubah — berlaku TANPA restart Neovim
   words.txt               Kata/istilah sendiri untuk menu autocomplete
-  projects.txt            Folder untuk <leader>sp ([git] dan [folder])
+  projects.txt            Folder untuk <leader>sw ([git] dan [folder])
   snippets/
     markdown.lua          Snippet untuk buffer Markdown (nama file = filetype)
 lazy-lock.json            Versi plugin yang terkunci (ditulis oleh lazy.nvim)
@@ -58,7 +58,7 @@ lazy-lock.json            Versi plugin yang terkunci (ditulis oleh lazy.nvim)
 5. **Tanpa abstraksi tambahan.** Tidak ada fungsi `setup()` buatan, tidak ada framework. Fitur di `custom/` langsung bekerja saat di-`require` dari `init.lua`. Helper (modul yang mengembalikan tabel) hanya dibuat bila memang dipakai lebih dari satu tempat (`hammerspoon.lua`, `datafile.lua`) atau diminta oleh plugin (`blink_words.lua` adalah format "source" yang diminta blink.cmp).
 6. **Data terpisah dari mesin.** Isi (kata, folder, snippet) ada di `data/`; mesin yang membacanya ada di `lua/`. Menambah isi tidak perlu menyentuh Lua, dan tidak perlu restart:
    - `words.txt` dibaca ulang saat autocomplete berikutnya bila file berubah.
-   - `projects.txt` dibaca ulang saat `<leader>sp` dibuka bila file berubah.
+   - `projects.txt` dibaca ulang saat `<leader>sw` dibuka bila file berubah.
    - `snippets/*.lua` dimuat ulang oleh LuaSnip saat disimpan di Neovim (dan, bila file watcher macOS berjalan, juga saat diubah dari editor lain).
 7. **Komentar menjelaskan *kenapa*, bukan mengulang kode.** Komentar yang menyebut nilai (mis. `path = 0`) harus cocok dengan nilainya.
 

@@ -24,7 +24,7 @@ return {
 
       telescope.setup({
         extensions = {
-          -- telescope-project.nvim: projects listed for <leader>sp.
+          -- telescope-project.nvim: projects listed for <leader>sw.
           -- The folders come from data/projects.txt (see below),
           -- not from `base_dirs`.
           project = {
@@ -139,10 +139,10 @@ return {
       map("n", "<leader>b", builtin.buffers, { desc = "Find buffers / opened files" })
       map("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
 
-      map("n", "<leader>sp", function()
+      map("n", "<leader>sw", function()
         sync_projects()
         telescope.extensions.project.project({})
-      end, { desc = "Switch project" })
+      end, { desc = "Select workspace project" })
 
       -- Search the current buffer's undo history.
       -- After finding the text:

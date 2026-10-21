@@ -1,8 +1,8 @@
-# Folders offered by <leader>sp (Switch project).
+# Folders offered by <leader>sw (Switch project).
 # One path per line; "~" is allowed. Lines starting with "#"
 # are ignored.
 #
-# Changes apply the next time <leader>sp is opened — no restart.
+# Changes apply the next time <leader>sw is opened — no restart.
 # Removing a line does NOT remove the project from the picker:
 # select it there and press <C-d> (Insert mode) or d (Normal mode).
 

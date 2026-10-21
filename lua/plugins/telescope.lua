@@ -109,13 +109,19 @@ return {
 
       local map = vim.keymap.set
 
-      map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+      map("n", "<leader>ff", function()
+        builtin.find_files({
+          wrap_results = true,
+        })
+      end, { desc = "Find files" })
 
       -- Live grep needs room: enlarge Neovide while searching and
       -- restore it when the picker closes (Enter, Esc, …).
       map("n", "<leader>fg", function()
         hammerspoon.event("neovide-large")
         builtin.live_grep({
+          wrap_results = true,
+
           attach_mappings = function(prompt_bufnr)
             vim.api.nvim_create_autocmd("BufWipeout", {
               buffer = prompt_bufnr,

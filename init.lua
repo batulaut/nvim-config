@@ -17,14 +17,14 @@ require("core.lazy")
 
 -- Built-in remaps and autocmds. Loaded after plugins so that
 -- these global mappings are the final word.
-require("core.keymaps")
 require("core.autocmds")
+require("core.keymaps")
 
 -- My own small features (no plugin behind them).
 require("custom.capitalize")
-require("custom.neovide")
 require("custom.move_lines")
-require("custom.sentences")
-require("custom.prompt")
+require("custom.neovide")
 require("custom.obsidian")
+require("custom.prompt")
+require("custom.sentences")
 require("custom.surround")

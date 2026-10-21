@@ -15,6 +15,7 @@ local map = vim.keymap.set
 
 -- jj: alternative escape from Insert mode.
 map("i", "jj", "<Esc>", { desc = "Change Insert Mode to Normal Mode" })
+map("i", "jk", "<Esc>", { desc = "Change Insert Mode to Normal Mode" })
 
 -- Undo lives on U; plain u is disabled to avoid accidental undo.
 map("n", "U", "u", { desc = "Undo" })

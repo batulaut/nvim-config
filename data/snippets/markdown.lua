@@ -45,6 +45,13 @@ return {
     i(1),
   }),
 
+  s(";le", {
+    t("`<leader>"),
+    i(1),
+    t("`"),
+    i(2),
+  }),
+
   s(";smk", {
     t({
       "Silakan mulai kerja.",

@@ -7,6 +7,7 @@
 # "Claude Code"), use a snippet in data/snippets/ instead.
 
 Claude Code
+Claude Cowork
 Neovim
 Neovide
-Ini adalah contoh kalimat untuk autocomplete.
+Terima kasih.

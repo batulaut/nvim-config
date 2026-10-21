@@ -16,5 +16,7 @@
 
 [folder]
 # Added as-is; no git needed.
+~/Documents/GitHub/plutoman-supabase/claude_tmp
+~/Documents/GitHub/plutoman-supabase/claude_tmp/external-clients/plutonet-android/claude_android_tmp
 ~/Documents/Sublime-Dump
 ~/Work/Obsidian/victor-obsd

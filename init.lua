@@ -21,6 +21,7 @@ require("core.keymaps")
 require("core.autocmds")
 
 -- My own small features (no plugin behind them).
+require("custom.capitalize")
 require("custom.neovide")
 require("custom.move_lines")
 require("custom.sentences")

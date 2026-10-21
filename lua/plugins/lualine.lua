@@ -65,6 +65,13 @@ return {
         },
 
         lualine_y = {
+          -- Current working directory
+          {
+            function()
+              return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+            end,
+            icon = "󰉋",
+          },
           -- "location",   -- line:column, e.g. 12:5
         },
 

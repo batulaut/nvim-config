@@ -1,8 +1,17 @@
 -- =========================================================
--- SURROUND — Wrap selected Markdown text
+-- SURROUND — Wrap the Visual selection (Markdown)
 -- =========================================================
+-- In a Markdown buffer: select text, press <leader>su, then the
+-- character to wrap it with:
+--   ( ) [ ] { } < >   brackets (either side gives the pair)
+--   " ' `             quotes / inline code
+--   *                 **bold**
+--   _                 _italic_
+--   ~                 ~~strikethrough~~
+-- Esc cancels. v wraps exactly the selection; V wraps whole
+-- lines (the first and last line). Ctrl-V is not supported.
 
-local pairs = {
+local delimiters = {
   ["("] = { "(", ")" },
   [")"] = { "(", ")" },
   ["["] = { "[", "]" },
@@ -15,79 +24,73 @@ local pairs = {
   ["'"] = { "'", "'" },
   ["`"] = { "`", "`" },
   ["*"] = { "**", "**" },
+  ["_"] = { "_", "_" },
   ["~"] = { "~~", "~~" },
 }
 
 local function surround_selection()
-  -- Capture the selection before requesting the delimiter.
-  local anchor = vim.fn.getpos("v")
-  local cursor = vim.fn.getpos(".")
+  -- Read the selection while still in Visual mode.
   local mode = vim.fn.mode()
+  local anchor, cursor = vim.fn.getpos("v"), vim.fn.getpos(".")
+  vim.cmd("normal! \27")
 
-  local start_row, start_col = anchor[2], anchor[3] - 1
-  local end_row, end_col = cursor[2], cursor[3] - 1
+  if mode == "\22" then
+    vim.notify("Surround: Ctrl-V (block) selection is not supported", vim.log.levels.WARN)
+    return
+  end
 
-  -- Normalize selection direction.
-  if start_row > end_row
-      or (start_row == end_row and start_col > end_col) then
+  local start_row, start_col = anchor[2], anchor[3]
+  local end_row, end_col = cursor[2], cursor[3]
+  if start_row > end_row or (start_row == end_row and start_col > end_col) then
     start_row, end_row = end_row, start_row
     start_col, end_col = end_col, start_col
   end
 
-  local start_idx = start_row - 1
-  local end_idx = end_row - 1
-
-  local selected
-
-  if mode == "V" then
-    selected = vim.api.nvim_buf_get_lines(
-      0, start_idx, end_idx + 1, false
-    )
-  else
-    selected = vim.api.nvim_buf_get_text(
-      0, start_idx, start_col,
-      end_idx, end_col + 1, {}
-    )
-  end
-
-  if #selected == 0 then
-    return
-  end
-
+  vim.api.nvim_echo({ { "Surround with: " } }, false, {})
   local char = vim.fn.getcharstr()
-  local delimiters = pairs[char]
-
-  if not delimiters then
-    vim.notify(
-      "Unsupported surround character: " .. char,
-      vim.log.levels.WARN
-    )
+  vim.api.nvim_echo({ { "" } }, false, {})
+  if char == "\27" then
     return
   end
 
-  local open, close = delimiters[1], delimiters[2]
-
-  selected[1] = open .. selected[1]
-  selected[#selected] = selected[#selected] .. close
+  local pair = delimiters[char]
+  if not pair then
+    vim.notify("Surround: unsupported character " .. vim.inspect(char), vim.log.levels.WARN)
+    return
+  end
+  local open, close = pair[1], pair[2]
 
   if mode == "V" then
-    vim.api.nvim_buf_set_lines(
-      0, start_idx, end_idx + 1, false, selected
-    )
-  else
-    vim.api.nvim_buf_set_text(
-      0, start_idx, start_col,
-      end_idx, end_col + 1, selected
-    )
+    local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
+    lines[1] = open .. lines[1]
+    lines[#lines] = lines[#lines] .. close
+    vim.api.nvim_buf_set_lines(0, start_row - 1, end_row, false, lines)
+    return
   end
+
+  -- v: byte columns are 1-based and point at the START of the
+  -- last selected character, which may be several bytes long
+  -- ("—", "é") or past the line end (v$). Find the byte just
+  -- after it, within the line.
+  local last_line = vim.api.nvim_buf_get_lines(0, end_row - 1, end_row, false)[1]
+  local end_byte = math.min(end_col, #last_line)
+  if end_byte > 0 then
+    end_byte = end_byte + vim.str_utf_end(last_line, end_byte)
+  end
+  local start_byte = math.min(start_col, #vim.api.nvim_buf_get_lines(0, start_row - 1, start_row, false)[1] + 1)
+
+  -- Insert the closing text first so the start position stays valid.
+  vim.api.nvim_buf_set_text(0, end_row - 1, end_byte, end_row - 1, end_byte, { close })
+  vim.api.nvim_buf_set_text(0, start_row - 1, start_byte - 1, start_row - 1, start_byte - 1, { open })
 end
 
+-- Mapping only in Markdown buffers.
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function(event)
     vim.keymap.set("x", "<leader>su", surround_selection, {
       buffer = event.buf,
-      desc = "Surround Markdown selection",
+      desc = "Surround selection",
     })
   end,
 })

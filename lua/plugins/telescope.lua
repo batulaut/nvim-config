@@ -136,7 +136,12 @@ return {
         })
       end, { desc = "Live grep / rg" })
 
-      map("n", "<leader>b", builtin.buffers, { desc = "Find buffers / opened files" })
+      map("n", "<leader>b", function()
+        builtin.buffers({
+          wrap_results = true,
+        })
+      end, { desc = "Find buffers / opened files" })
+
       map("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
 
       map("n", "<leader>sw", function()

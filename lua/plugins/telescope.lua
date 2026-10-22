@@ -141,7 +141,9 @@ return {
 
       map("n", "<leader>sw", function()
         sync_projects()
-        telescope.extensions.project.project({})
+        -- hide_workspace: drop the "w0" column. Workspaces are an
+        -- unfinished telescope-project feature; every project is in w0.
+        telescope.extensions.project.project({ hide_workspace = true })
       end, { desc = "Select workspace project" })
 
       -- Search the current buffer's undo history.

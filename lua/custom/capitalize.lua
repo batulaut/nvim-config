@@ -1,85 +1,116 @@
 -- =========================================================
--- CAPITALIZE — Sentence capitalization for Markdown
+-- CAPITALIZE — First letter of every sentence (Markdown)
 -- =========================================================
+-- <leader>ca in a Markdown buffer:
+--   Normal mode: every sentence on the current line.
+--   Visual mode: every sentence inside the selection (v, V or
+--                Ctrl-V); text outside the selection is untouched.
+--
+-- Capitalized: the first letter of a line's text (after list
+-- markers, "- [ ] ", "> ", "#", and openers such as ( " ' * _ [)
+-- and the first letter after each sentence end (". ", "! ", "? ").
+-- Skipped: inline `code` and fenced code blocks.
+--
+-- Each line is treated as starting a sentence, which suits
+-- one-sentence-per-line text (see <leader>jj). In a paragraph
+-- that is hard-wrapped mid-sentence, select only what you mean.
+-- Only ASCII letters are changed.
 
-local function capitalize_line(line)
-  -- Capitalize the first letter after common Markdown prefixes.
-  local prefixes = {
-    "^(%s*#+%s+)(%a)",
-    "^(%s*>%s*)(%a)",
-    "^(%s*[-+*]%s+)(%a)",
-    "^(%s*%d+[.)]%s+)(%a)",
-    "^(%s+)(%a)",
-  }
+local md = require("custom.markdown_text")
 
-  for _, pattern in ipairs(prefixes) do
-    line = line:gsub(pattern, function(prefix, letter)
-      return prefix .. letter:upper()
-    end, 1)
+-- Byte positions of the letters that start a sentence.
+local function sentence_starts(line)
+  local starts = {}
+  local spans = md.code_spans(line)
+
+  -- Skip openers like ( " ' * _ [ ; take the letter after them.
+  local function add(from)
+    local _, openers_end = line:find("^[%(%[\"'%*_]*", from)
+    local letter = openers_end + 1
+    if not line:sub(letter, letter):match("%a") then
+      return
+    end
+    for _, span in ipairs(spans) do
+      if letter >= span[1] and letter <= span[2] then
+        return
+      end
+    end
+    starts[#starts + 1] = letter
   end
 
-  -- Capitalize the first letter of a plain line.
-  line = line:gsub("^(%s*)(%a)", function(prefix, letter)
-    return prefix .. letter:upper()
-  end, 1)
+  add(#md.prefix(line) + 1)
+  for _, b in ipairs(md.sentence_breaks(line)) do
+    add(b.start)
+  end
+  return starts
+end
 
-  -- Capitalize after sentence-ending punctuation and whitespace.
-  line = line:gsub("([.!?]%s+)(%a)", function(space, letter)
-    return space .. letter:upper()
-  end)
-
+-- Uppercase the sentence starts of `line` that fall within
+-- byte columns from..to (inclusive).
+local function capitalize(line, from, to)
+  for _, index in ipairs(sentence_starts(line)) do
+    if index >= from and index <= to then
+      line = line:sub(1, index - 1) .. line:sub(index, index):upper() .. line:sub(index + 1)
+    end
+  end
   return line
+end
+
+-- Capitalize rows first..last; cols(row, line) gives the byte
+-- range to touch on each row.
+local function capitalize_rows(first, last, cols)
+  local code_rows = md.code_block_rows(first, last)
+  local lines = vim.api.nvim_buf_get_lines(0, first - 1, last, false)
+  local changed = false
+
+  for i, line in ipairs(lines) do
+    local row = first + i - 1
+    if not code_rows[row] then
+      lines[i] = capitalize(line, cols(row, line))
+      changed = changed or lines[i] ~= line
+    end
+  end
+
+  -- One undo step, and no "modified" flag when nothing changed.
+  if changed then
+    vim.api.nvim_buf_set_lines(0, first - 1, last, false, lines)
+  end
 end
 
 local function capitalize_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1]
-  local line = vim.api.nvim_get_current_line()
-
-  vim.api.nvim_set_current_line(capitalize_line(line))
+  capitalize_rows(row, row, function(_, line)
+    return 1, #line
+  end)
 end
 
 local function capitalize_selection()
-  local start_pos = vim.api.nvim_buf_get_mark(0, "<")
-  local end_pos = vim.api.nvim_buf_get_mark(0, ">")
+  -- Read the selection while still in Visual mode ('< and '>
+  -- would still point at the previous selection).
+  local mode = vim.fn.mode()
+  local anchor, cursor = vim.fn.getpos("v"), vim.fn.getpos(".")
+  vim.cmd("normal! \27")
 
-  if start_pos[1] == 0 or end_pos[1] == 0 then
-    return
+  local first, last = anchor[2], cursor[2]
+  local first_col, last_col = anchor[3], cursor[3]
+  if first > last or (first == last and first_col > last_col) then
+    first, last = last, first
+    first_col, last_col = last_col, first_col
   end
 
-  local start_row, start_col = start_pos[1], start_pos[2] - 1
-  local end_row, end_col = end_pos[1], end_pos[2]
-
-  -- Normalize selection direction.
-  if start_row > end_row
-      or (start_row == end_row and start_col > end_col) then
-    start_row, end_row = end_row, start_row
-    start_col, end_col = end_col, start_col
-  end
-
-  local lines = vim.api.nvim_buf_get_text(
-    0,
-    start_row - 1,
-    start_col,
-    end_row - 1,
-    end_col,
-    {}
-  )
-
-  for i, line in ipairs(lines) do
-    lines[i] = capitalize_line(line)
-  end
-
-  vim.api.nvim_buf_set_text(
-    0,
-    start_row - 1,
-    start_col,
-    end_row - 1,
-    end_col,
-    lines
-  )
+  capitalize_rows(first, last, function(row, line)
+    if mode == "V" then
+      return 1, #line
+    elseif mode == "\22" then -- Ctrl-V: same columns on every row
+      return math.min(anchor[3], cursor[3]), math.max(anchor[3], cursor[3])
+    end
+    -- v: from the start column on the first row to the end
+    -- column on the last row, whole lines in between.
+    return row == first and first_col or 1, row == last and last_col or #line
+  end)
 end
 
--- Define mappings only for Markdown buffers.
+-- Mappings only in Markdown buffers.
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function(event)

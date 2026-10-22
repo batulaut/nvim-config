@@ -139,6 +139,12 @@ return {
       map("n", "<leader>b", function()
         builtin.buffers({
           wrap_results = true,
+          attach_mappings = function(_, map)
+            vim.schedule(function()
+              vim.cmd("stopinsert")
+            end)
+            return true
+          end,
         })
       end, { desc = "Find buffers / opened files" })
 

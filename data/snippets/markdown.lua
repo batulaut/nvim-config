@@ -13,17 +13,21 @@
 -- provided by LuaSnip; nothing needs to be required here.
 --   s(trigger, nodes)  a snippet
 --   t("text")          fixed text ({ "a", "b" } = two lines)
---   i(1)               cursor stop; Tab jumps to the next one
+--   i(1), i(2), …      cursor stops; Tab jumps to the next one
+--
+-- Do NOT end a snippet with an i(n). The cursor already lands
+-- after the last text, and a trailing stop keeps the snippet
+-- "active" while you keep typing: Tab then needs an extra press
+-- to accept a completion. Stops only belong BETWEEN texts, as
+-- in ;le below.
 
 return {
   s(";ask", {
     t("Yang ingin saya tanyakan: "),
-    i(1),
   }),
 
   s(";cb", {
     t("Sebelum mulai, cek dulu kondisi branch terbaru saat ini."),
-    i(1),
   }),
 
   s(";cc", {
@@ -32,24 +36,20 @@ return {
 
   s(";ctx", {
     t("Konteks saya saat ini: "),
-    i(1),
   }),
 
   s(";goal", {
     t("Tujuan saya: "),
-    i(1),
   }),
 
   s(";jua", {
     t("Jangan ubah apapun dulu sebelum saya memintanya secara eksplisit."),
-    i(1),
   }),
 
   s(";le", {
     t("`<leader>"),
     i(1),
     t("`"),
-    i(2),
   }),
 
   s(";smk", {
@@ -58,16 +58,13 @@ return {
       "Jika ada temuan atau ambiguitas selama kerja, yang sifatnya tidak memblokir, langsung catat ke dokumen.",
       "Kalau ada yang memblokir, pause dulu untuk tanyakan ke saya.",
     }),
-    i(1),
   }),
 
   s(";tisa", {
     t("Tetap ikuti semua aturan yang sudah ada (`CLAUDE.md` dan dokumen lain yang relevan.)"),
-    i(1),
   }),
 
   s(";tcl", {
     t("Tolong cek lagi di kode."),
-    i(1),
   }),
 }

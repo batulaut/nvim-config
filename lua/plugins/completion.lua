@@ -108,6 +108,15 @@ return {
     config = function()
       local ls = require("luasnip")
 
+      -- Forget a snippet as soon as the cursor leaves it (or its
+      -- text is deleted). Without this, Tab could still "jump"
+      -- into an old snippet elsewhere in the buffer, moving the
+      -- cursor backwards unexpectedly.
+      ls.config.setup({
+        region_check_events = "CursorMoved,CursorMovedI",
+        delete_check_events = "TextChanged,InsertLeave",
+      })
+
       -- Cycle through the options of a choice node, i.e. a
       -- snippet that offers several alternatives at one spot.
       vim.keymap.set({ "i", "s" }, "<C-n>", function()

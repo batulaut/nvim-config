@@ -37,8 +37,17 @@ vim.opt.scrolloff = 8
 vim.opt.wrap = true
 vim.opt.linebreak = true
 
--- Spell checking is off globally (:Prompt buffers turn it on).
+-- Spell checking is off (toggle by hand with :set spell!).
 vim.opt.spell = false
+
+-- Disabled for now; uncomment when spell checking is wanted again
+-- (together with the spell line in lua/custom/prompt.lua).
+-- Indonesian first, English for technical terms: a word is only
+-- marked when it is wrong in both. The first time spell is on,
+-- Neovim offers to download the Indonesian dictionary into
+-- ~/.local/share/nvim/site/spell/ (outside this repo).
+--
+-- vim.opt.spelllang = { "id", "en" }
 
 
 -- ---------------------------------------------------------

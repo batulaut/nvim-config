@@ -15,15 +15,13 @@
 --
 -- The moving itself is Vim's :move, which also carries marks
 -- (e.g. `ma`) along with the lines and is one undo step.
+--
+-- If more is ever needed (moving left/right, dot-repeat), the
+-- plugin https://github.com/nvim-mini/mini.move does this too.
 
 -- Target for ":{first},{last}move {target}" (the block ends up
 -- BELOW line {target}; 0 = top of the buffer), clamped to the
 -- buffer. Returns nil when there is nowhere to move.
---
--- Note:
--- Consider using `https://github.com/nvim-mini/mini.move`
--- if you need more features in the future.
-
 local function move_target(first, last, direction, count)
   if direction == "up" then
     if first == 1 then

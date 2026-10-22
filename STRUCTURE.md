@@ -20,16 +20,20 @@ lua/
     lualine.lua           statusline
     flash.lua             lompat cepat
     completion.lua        blink.cmp + LuaSnip (+ sumber kata dari data/words.txt)
+    autolist.lua          lanjutkan/indent list Markdown (berbagi <Tab>/<CR> dengan blink)
     render-markdown.lua   render Markdown (default mati)
   custom/                 Fitur buatan sendiri, tanpa plugin di baliknya
     neovide.lua           Font, tombol Option, resize jendela Neovide
     move_lines.lua        Pindah baris/seleksi dengan Option + panah/j/k
-    sentences.lua         Pecah kalimat ke baris baru
+    sentences.lua         Pecah kalimat ke baris baru (<leader>jj / <leader>jk)
+    capitalize.lua        Huruf kapital awal kalimat (<leader>ca, Markdown)
+    surround.lua          Bungkus seleksi dengan kurung/quote (<leader>su, Markdown)
     prompt.lua            :Prompt (buffer Markdown tanpa nama)
     obsidian.lua          Frontmatter otomatis untuk file baru di vault
     hammerspoon.lua       Helper*: kirim event ke Hammerspoon
     datafile.lua          Helper*: baca file teks di data/
     blink_words.lua       Helper*: sumber blink.cmp untuk data/words.txt
+    markdown_text.lua     Helper*: awalan list/kutipan & akhir kalimat (sentences + capitalize)
 data/                     Isi yang sering diubah — berlaku TANPA restart Neovim
   words.txt               Kata/istilah sendiri untuk menu autocomplete
   projects.txt            Folder untuk <leader>sw ([git] dan [folder])
@@ -64,13 +68,13 @@ lazy-lock.json            Versi plugin yang terkunci (ditulis oleh lazy.nvim)
 
 ## Urutan muat (penting)
 
-Urutan di `init.lua` disengaja:
+Urutan **antar-bagian** di `init.lua` disengaja (urutan di **dalam** satu bagian bebas, mis. alfabetis):
 
 1. **Leader** diset paling awal — keymap `<leader>…` yang dibuat sebelum ini akan memakai leader lama.
 2. **`core.options`** — tidak bergantung pada apa pun.
 3. **`core.lazy`** — memuat semua plugin. Colorscheme punya `priority = 1000` sehingga dimuat lebih dulu.
-4. **`core.keymaps`, `core.autocmds`** — setelah plugin, supaya mapping global ini yang terakhir menang.
-5. **`custom.*`** — fitur sendiri. `custom.move_lines` memakai `unique = true`: kalau tombol Option + panah/j/k juga didefinisikan di tempat lain, Neovim menampilkan error saat startup (disengaja, supaya bentrok langsung ketahuan).
+4. **`core.keymaps`, `core.autocmds`** — setelah plugin, supaya mapping global ini yang terakhir menang. Keduanya tidak saling bergantung.
+5. **`custom.*`** — fitur sendiri; tidak saling bergantung (helper di-`require` sendiri oleh pemakainya, bukan dari `init.lua`). `custom.move_lines` memakai `unique = true`: kalau tombol Option + panah/j/k juga didefinisikan di tempat lain, Neovim menampilkan error saat startup (disengaja, supaya bentrok langsung ketahuan).
 
 Catatan: sebagian besar plugin di sini **tidak lazy** (dimuat saat startup), sama seperti sebelum reorganisasi. Yang lazy: `flash.nvim` (lewat `keys`/`VeryLazy`) dan `render-markdown.nvim` (lewat `ft = markdown`).
 
@@ -84,7 +88,7 @@ Catatan: sebagian besar plugin di sini **tidak lazy** (dimuat saat startup), sam
 | Menambah keymap umum | `core/keymaps.lua`, di bagian yang sesuai. Selalu isi `desc`. |
 | Menambah opsi | `core/options.lua`, di bagian yang sesuai. |
 | Menambah fitur sendiri | Buat `lua/custom/<fitur>.lua` (command/autocmd/keymap-nya di file itu), lalu tambahkan `require("custom.<fitur>")` di `init.lua`. |
-| Menambah snippet | Edit `data/snippets/markdown.lua`, lalu simpan. Untuk filetype lain buat `data/snippets/<filetype>.lua` (mis. `lua.lua`, `all.lua` untuk semua filetype) dengan bentuk yang sama. |
+| Menambah snippet | Edit `data/snippets/markdown.lua`, lalu simpan. Untuk filetype lain buat `data/snippets/<filetype>.lua` (mis. `lua.lua`, `all.lua` untuk semua filetype) dengan bentuk yang sama. **Jangan akhiri snippet dengan `i(n)`** — penjelasannya di header file itu. |
 | Menambah kata autocomplete | Tambah satu baris di `data/words.txt`. Spasi boleh ("Claude Code"). |
 | Menambah folder project | Tambah satu baris di `data/projects.txt`, di bawah `[git]` (dicari repo git-nya) atau `[folder]` (ditambahkan apa adanya). Menghapus baris tidak menghapus project dari daftar — hapus di picker dengan `<C-d>`. |
 | Mengubah tampilan/warna | `plugins/colorscheme.lua` (`custom_highlights`), termasuk warna diff. Jangan pakai `nvim_set_hl` di file lain — hasilnya hilang saat `:colorscheme` dijalankan ulang. |

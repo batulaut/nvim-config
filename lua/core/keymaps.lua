@@ -13,6 +13,8 @@ local map = vim.keymap.set
 -- Vim Habits
 -- ---------------------------------------------------------
 
+map("n", "G", "Gzz", { desc = "Go to last line and center" })
+
 -- jj: alternative escape from Insert mode.
 map("i", "jj", "<Esc>", { desc = "Change Insert Mode to Normal Mode" })
 map("i", "jk", "<Esc>", { desc = "Change Insert Mode to Normal Mode" })

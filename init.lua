@@ -4,6 +4,10 @@
 -- This file only decides WHAT is loaded and IN WHICH ORDER.
 -- Actual settings live in lua/. See STRUCTURE.md for the layout.
 
+-- Ensure Homebrew binaries are available to Neovim,
+-- including when launched through Neovide.
+vim.env.PATH = "/opt/homebrew/bin:" .. vim.env.PATH
+
 -- Leader must be set before any plugin or keymap is defined,
 -- otherwise "<leader>" in those mappings resolves to the old key.
 vim.g.mapleader = " "

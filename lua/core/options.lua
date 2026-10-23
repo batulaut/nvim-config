@@ -25,7 +25,7 @@ vim.opt.signcolumn = "yes"
 -- vim.opt.guicursor = ""
 
 -- Keep some context visible above/below the cursor.
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 12
 
 
 -- ---------------------------------------------------------

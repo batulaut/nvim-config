@@ -119,6 +119,12 @@ return {
 
       local map = vim.keymap.set
 
+      map("n", "<leader>tb", function()
+        builtin.builtin({
+          wrap_results = true,
+        })
+      end, { desc = "Find Telescope builtins" })
+
       map("n", "<leader>ff", function()
         builtin.find_files({
           wrap_results = true,

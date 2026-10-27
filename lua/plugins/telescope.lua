@@ -164,13 +164,17 @@ return {
         })
       end, { desc = "Find buffers / opened files" })
 
-      map("n", "<leader>fh", builtin.help_tags, { desc = "Find help" })
       map("n", "<leader>fo", function()
         builtin.oldfiles({
           wrap_results = true,
         })
       end, { desc = "Find recent files" })
 
+      map("n", "<leader>fh", function()
+        builtin.help_tags({
+          wrap_results = true,
+        })
+      end, { desc = "Find help" })
 
       map("n", "<leader>sw", function()
         sync_projects()

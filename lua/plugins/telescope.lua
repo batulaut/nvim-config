@@ -23,6 +23,16 @@ return {
       -- ---------------------------------------------------
 
       telescope.setup({
+        defaults = {
+          layout_strategy = "vertical",
+          layout_config = {
+            vertical = {
+              prompt_position = "top",
+              preview_height = 0.5,
+            },
+          },
+        },
+
         extensions = {
           -- telescope-project.nvim: projects listed for <leader>sw.
           -- The folders come from data/projects.txt (see below),

@@ -1,5 +1,5 @@
 -- =========================================================
--- TOGGLETERM — Terminal inside Neovim
+-- TOGGLETERM — Persistent Floating Terminal
 -- =========================================================
 
 return {
@@ -13,10 +13,25 @@ return {
         direction = "float",
         start_in_insert = true,
         close_on_exit = false,
+        persist_size = true,
+
         float_opts = {
           border = "curved",
-          width = 90,
-          height = 25,
+
+          -- Responsive size for different Neovide window sizes.
+          width = function()
+            return math.max(
+              20,
+              math.min(110, math.floor(vim.o.columns * 0.85))
+            )
+          end,
+
+          height = function()
+            return math.max(
+              8,
+              math.min(30, math.floor(vim.o.lines * 0.70))
+            )
+          end,
         },
       })
 
@@ -31,11 +46,14 @@ return {
 
       vim.keymap.set("n", "<C-\\>", function()
         terminal:toggle()
-      end, { desc = "Toggle single floating terminal" })
+      end, {
+        desc = "Terminal: toggle floating terminal",
+      })
 
       -- Terminal-specific keymaps.
       vim.api.nvim_create_autocmd("TermOpen", {
         pattern = "term://*toggleterm#*",
+
         callback = function(ev)
           local map_opts = {
             buffer = ev.buf,
@@ -76,7 +94,7 @@ return {
             })
           )
 
-          -- Navigate between Neovim windows.
+          -- Navigate to windows behind the floating terminal.
           for key, direction in pairs({
             h = "h",
             j = "j",

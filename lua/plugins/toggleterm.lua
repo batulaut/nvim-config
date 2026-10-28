@@ -43,6 +43,13 @@ return {
             noremap = true,
           }
 
+          -- Toggle the terminal directly from Terminal mode.
+          vim.keymap.set("t", "<C-\\>", function()
+            terminal:toggle()
+          end, vim.tbl_extend("force", map_opts, {
+            desc = "Terminal: hide floating terminal",
+          }))
+
           -- Leave Terminal mode without closing the terminal.
           vim.keymap.set(
             "t",

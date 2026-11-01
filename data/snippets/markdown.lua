@@ -26,6 +26,10 @@ return {
     t("Yang ingin saya tanyakan: "),
   }),
 
+  s(";bjdp", {
+    t("buatkan judul-deskripsi PR."),
+  }),
+
   s(";cb", {
     t("Sebelum mulai, cek dulu kondisi branch terbaru saat ini."),
   }),
@@ -36,6 +40,10 @@ return {
 
   s(";ctx", {
     t("Konteks saya saat ini: "),
+  }),
+
+  s(";utf", {
+    t("ubah tanggal di Footer"),
   }),
 
   s(";goal", {
@@ -50,6 +58,10 @@ return {
     t("`<leader>"),
     i(1),
     t("`"),
+  }),
+
+  s(";pdt", {
+   t("Pindahkan saja tag-nya, mumpung belum saya push."),
   }),
 
   s(";smk", {

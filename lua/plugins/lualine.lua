@@ -15,6 +15,23 @@ return {
       options = {
         -- One statusline for the whole Neovim window.
         globalstatus = true,
+
+        refresh = {
+          events = {
+            "WinEnter",
+            "BufEnter",
+            "BufWritePost",
+            "SessionLoadPost",
+            "FileChangedShellPost",
+            "VimResized",
+            "Filetype",
+            "CursorMoved",
+            "CursorMovedI",
+            "ModeChanged",
+            "TextChanged",
+            "TextChangedI",
+          },
+        },
       },
 
       sections = {
@@ -62,6 +79,17 @@ return {
           "filetype",
           -- "encoding",   -- usually utf-8
           -- "fileformat", -- unix, dos, …
+
+          -- Word count (Markdown only)
+          {
+            function()
+              if vim.bo.filetype ~= "markdown" then
+                return ""
+              end
+
+              return vim.fn.wordcount().words .. " words"
+            end,
+          },
         },
 
         lualine_y = {

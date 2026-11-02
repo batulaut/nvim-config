@@ -27,7 +27,7 @@ return {
           layout_strategy = "vertical",
           layout_config = {
             vertical = {
-              prompt_position = "top",
+              prompt_position = "bottom",
               preview_height = 0.5,
             },
           },

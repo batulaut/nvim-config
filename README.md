@@ -24,13 +24,11 @@ bat
 fd
 ffmpeg
 fzf
-micro
 python@3.14
 ripgrep
 starship
 supabase
 terminal-notifier
 trash
-yazi
 ```
 

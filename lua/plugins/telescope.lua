@@ -159,10 +159,28 @@ return {
       end, { desc = "Find buffers / opened files" })
 
       map("n", "<leader>fo", function()
-        builtin.oldfiles({
+        local pickers = require("telescope.pickers")
+        local finders = require("telescope.finders")
+        local conf = require("telescope.config").values
+
+        local files = vim.tbl_filter(function(file)
+          local stat = vim.uv.fs_stat(file)
+          return stat ~= nil and stat.type == "file"
+        end, vim.v.oldfiles)
+
+        pickers.new({}, {
+          prompt_title = "Recent Files",
+          finder = finders.new_table({
+            results = files,
+            entry_maker = conf.file_entry_maker,
+          }),
+          sorter = conf.file_sorter({}),
+          previewer = conf.file_previewer({}),
           wrap_results = true,
-        })
-      end, { desc = "Find recent files" })
+        }):find()
+      end, {
+        desc = "Find existing recent files",
+      })
 
       map("n", "<leader>fh", function()
         builtin.help_tags({

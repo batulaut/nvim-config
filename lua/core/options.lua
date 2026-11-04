@@ -25,8 +25,47 @@ vim.opt.signcolumn = "yes"
 -- vim.opt.guicursor = ""
 
 -- Keep some context visible above/below the cursor.
-vim.opt.scrolloff = 12
+vim.opt.scrolloff = 5
 
+-- Maintain bottom context for Markdown and TXT files.
+local group = vim.api.nvim_create_augroup(
+  "TextBufferScrolloff",
+  { clear = true }
+)
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = group,
+  pattern = { "markdown", "text" },
+
+  callback = function(args)
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      group = group,
+      buffer = args.buf,
+
+      callback = function()
+        local win = vim.api.nvim_get_current_win()
+
+        if vim.api.nvim_win_get_buf(win) ~= args.buf then
+          return
+        end
+
+        local cursor = vim.api.nvim_win_get_cursor(win)
+        local pos = vim.fn.screenpos(win, cursor[1], cursor[2] + 1)
+
+        if pos.row == 0 then
+          return
+        end
+
+        local height = vim.api.nvim_win_get_height(win)
+        local bottom = height - pos.row
+
+        if bottom < 12 then
+          vim.cmd("normal! zz")
+        end
+      end,
+    })
+  end,
+})
 
 -- ---------------------------------------------------------
 -- Text Wrapping & Spelling

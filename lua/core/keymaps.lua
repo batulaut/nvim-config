@@ -38,6 +38,10 @@ map("n", "K", "gk", { desc = "Move up by visual line" })
 map("n", "<leader>J", "J", { desc = "Join lines" })
 map("n", "<leader>K", "K", { desc = "Help for word under cursor" })
 
+map("n", "<leader>ya", function()
+  local path = vim.cmd("%y")
+end, { desc = "Yank all from current buffer" })
+
 
 -- ---------------------------------------------------------
 -- File

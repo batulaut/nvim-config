@@ -6,28 +6,31 @@ Gambaran umum (tujuan, environment, tool yang terpasang) ada di [README.md](READ
 ## Peta file
 
 ```
-init.lua                  Titik masuk: leader + urutan require. Tidak berisi setting.
+init.lua                  Titik masuk: PATH Homebrew, leader, urutan require. Tidak berisi setting.
 lua/
   core/                   Perilaku bawaan Neovim, tanpa plugin
     options.lua           vim.opt saja
     lazy.lua              Bootstrap lazy.nvim + import lua/plugins/
-    keymaps.lua           Remap perilaku bawaan (jj, U/u, J/K, gaya macOS/Sublime, …)
-    autocmds.lua          Autocmd umum (auto-save)
+    keymaps.lua           Remap perilaku bawaan (jj/jk, U/u, J/K, G, gaya macOS/Sublime, …)
+    autocmds.lua          Autocmd umum (auto-save, konteks bawah untuk prosa, notifikasi reload)
   plugins/                Satu file = satu plugin (atau satu kelompok plugin yang saling butuh)
     colorscheme.lua       catppuccin
-    telescope.lua         telescope + telescope-project + telescope-undo
+    telescope.lua         telescope + telescope-project
     git.lua               diffview
     lualine.lua           statusline
     flash.lua             lompat cepat
     completion.lua        blink.cmp + LuaSnip (+ sumber kata dari data/words.txt)
     autolist.lua          lanjutkan/indent list Markdown (berbagi <Tab>/<CR> dengan blink)
     render-markdown.lua   render Markdown (default mati)
+    toggleterm.lua        terminal mengambang (<C-\>)
+    which-key.lua         popup tombol lanjutan setelah prefix (mis. <leader>)
   custom/                 Fitur buatan sendiri, tanpa plugin di baliknya
     neovide.lua           Font, tombol Option, resize jendela Neovide
     move_lines.lua        Pindah baris/seleksi dengan Option + panah/j/k
     sentences.lua         Pecah kalimat ke baris baru (<leader>jj / <leader>jk)
     capitalize.lua        Huruf kapital awal kalimat (<leader>ca, Markdown)
     surround.lua          Bungkus seleksi dengan kurung/quote (<leader>su, Markdown)
+    special_chars.lua     Digraph tambahan (Ctrl+k a r → "→")
     prompt.lua            :Prompt (buffer Markdown tanpa nama)
     obsidian.lua          Frontmatter otomatis untuk file baru di vault
     hammerspoon.lua       Helper*: kirim event ke Hammerspoon
@@ -36,7 +39,7 @@ lua/
     markdown_text.lua     Helper*: awalan list/kutipan & akhir kalimat (sentences + capitalize)
 data/                     Isi yang sering diubah — berlaku TANPA restart Neovim
   words.txt               Kata/istilah sendiri untuk menu autocomplete
-  projects.txt            Folder untuk <leader>sw ([git] dan [folder])
+  projects.txt            Folder untuk <leader>sw ([git] dan [folder]); di-ignore di repo ~/.config/nvim
   snippets/
     markdown.lua          Snippet untuk buffer Markdown (nama file = filetype)
 lazy-lock.json            Versi plugin yang terkunci (ditulis oleh lazy.nvim)
@@ -76,7 +79,7 @@ Urutan **antar-bagian** di `init.lua` disengaja (urutan di **dalam** satu bagian
 4. **`core.keymaps`, `core.autocmds`** — setelah plugin, supaya mapping global ini yang terakhir menang. Keduanya tidak saling bergantung.
 5. **`custom.*`** — fitur sendiri; tidak saling bergantung (helper di-`require` sendiri oleh pemakainya, bukan dari `init.lua`). `custom.move_lines` memakai `unique = true`: kalau tombol Option + panah/j/k juga didefinisikan di tempat lain, Neovim menampilkan error saat startup (disengaja, supaya bentrok langsung ketahuan).
 
-Catatan: sebagian besar plugin di sini **tidak lazy** (dimuat saat startup), sama seperti sebelum reorganisasi. Yang lazy: `flash.nvim` (lewat `keys`/`VeryLazy`) dan `render-markdown.nvim` (lewat `ft = markdown`).
+Catatan: sebagian besar plugin di sini **tidak lazy** (dimuat saat startup). Yang lazy: `flash.nvim` dan `which-key.nvim` (lewat `VeryLazy`), `render-markdown.nvim` dan `autolist.nvim` (lewat `ft = markdown`).
 
 ## Resep cepat
 

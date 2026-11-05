@@ -29,11 +29,18 @@ function source.new()
 end
 
 function source:get_completions(ctx, callback)
-  -- Replace exactly the keyword being typed. An explicit range
-  -- is needed because entries may contain spaces, which blink
-  -- cannot place reliably on its own.
+  -- Replace exactly what has been typed of the keyword: from its
+  -- start up to the cursor. An explicit range is needed because
+  -- entries may contain spaces, which blink cannot place reliably
+  -- on its own.
+  --
+  -- Not up to the END of the keyword (ctx.bounds is the whole
+  -- word around the cursor): typing "Cla" right before "halo"
+  -- and accepting "Claude Code" would then delete "halo" too.
+  -- blink's own sources also stop at the cursor.
   local line = ctx.bounds.line_number - 1
   local first = ctx.bounds.start_col - 1
+  local last = math.max(first, ctx.cursor[2])
 
   local items = {}
   for _, word in ipairs(words()) do
@@ -45,7 +52,7 @@ function source:get_completions(ctx, callback)
         -- A fresh table per item: blink modifies items in place.
         range = {
           start = { line = line, character = first },
-          ["end"] = { line = line, character = first + ctx.bounds.length },
+          ["end"] = { line = line, character = last },
         },
       },
     }

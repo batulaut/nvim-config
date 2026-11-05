@@ -60,3 +60,24 @@ vim.api.nvim_create_autocmd("CursorMoved", {
     end
   end,
 })
+
+
+-- ---------------------------------------------------------
+-- Reload Notice
+-- ---------------------------------------------------------
+
+-- 'autoread' (on by default) silently replaces a buffer's text
+-- when its file was changed by another program (a second
+-- Neovim, Obsidian, Claude Code, a sync tool) while the buffer
+-- had no unsaved changes — for example right after auto-save.
+-- Neovim checks this when it regains focus and when entering a
+-- buffer. Make it visible, so "disappearing" text can be traced;
+-- U (undo) brings the previous text back.
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  callback = function(args)
+    vim.notify(
+      "Reloaded from disk (changed outside Neovim): " .. vim.fn.fnamemodify(args.file, ":~:."),
+      vim.log.levels.WARN
+    )
+  end,
+})

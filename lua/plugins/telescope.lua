@@ -9,7 +9,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-project.nvim",
-      "debugloop/telescope-undo.nvim",
     },
 
     config = function()
@@ -43,16 +42,10 @@ return {
             search_by = { "title", "path" },
             cd_scope = { "global" },
           },
-
-          -- telescope-undo.nvim: search undo history.
-          undo = {
-            side_by_side = false,
-          },
         },
       })
 
       telescope.load_extension("project")
-      telescope.load_extension("undo")
 
       -- ---------------------------------------------------
       -- Project folders from data/projects.txt
@@ -194,14 +187,6 @@ return {
         -- unfinished telescope-project feature; every project is in w0.
         telescope.extensions.project.project({ hide_workspace = true })
       end, { desc = "Select workspace project" })
-
-      -- Search the current buffer's undo history.
-      -- After finding the text:
-      --    Enter: Retrieves the text added by the selected change to the register
-      --    Shift+Enter: Retrieves the text deleted by the selected change
-      --    Ctrl+Enter: Restores the entire buffer to the state of the selected change
-      --    Ctrl+R: Alternative to restore that state
-      map("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "Search undo history" })
     end,
   },
 }

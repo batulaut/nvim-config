@@ -61,7 +61,7 @@ return {
   }),
 
   s(";pdt", {
-   t("Pindahkan saja tag-nya, mumpung belum saya push."),
+    t("Pindahkan saja tag-nya, mumpung belum saya push."),
   }),
 
   s(";smk", {

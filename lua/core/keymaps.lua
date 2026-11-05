@@ -13,6 +13,7 @@ local map = vim.keymap.set
 -- Vim Habits
 -- ---------------------------------------------------------
 
+-- G (also with a count, e.g. 42G) centers the target line.
 map("n", "G", "Gzz", { desc = "Go to last line and center" })
 
 -- jj: alternative escape from Insert mode.
@@ -38,9 +39,8 @@ map("n", "K", "gk", { desc = "Move up by visual line" })
 map("n", "<leader>J", "J", { desc = "Join lines" })
 map("n", "<leader>K", "K", { desc = "Help for word under cursor" })
 
-map("n", "<leader>ya", function()
-  local path = vim.cmd("%y")
-end, { desc = "Yank all from current buffer" })
+-- Yank the whole buffer (to the system clipboard: clipboard=unnamedplus).
+map("n", "<leader>ya", "<cmd>%yank<cr>", { desc = "Yank all from current buffer" })
 
 
 -- ---------------------------------------------------------

@@ -26,3 +26,37 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
     end
   end,
 })
+
+
+-- ---------------------------------------------------------
+-- Bottom Context for Prose
+-- ---------------------------------------------------------
+
+-- In Markdown and text files, keep about 12 lines visible below
+-- the cursor: when the cursor gets closer to the bottom of the
+-- window, center it (zz). Normal mode only (CursorMoved).
+--
+-- One autocmd for all buffers (checking the filetype) rather
+-- than one per buffer, so nothing piles up when a buffer's
+-- FileType event fires again.
+local BOTTOM_CONTEXT = 12
+
+vim.api.nvim_create_autocmd("CursorMoved", {
+  group = vim.api.nvim_create_augroup("ProseBottomContext", { clear = true }),
+  callback = function()
+    local filetype = vim.bo.filetype
+    if filetype ~= "markdown" and filetype ~= "text" then
+      return
+    end
+
+    -- winline(): the cursor's screen line inside this window,
+    -- counting wrapped lines. In a short window, ask for less
+    -- than half its height, or zz would fire on every move.
+    local height = vim.fn.winheight(0)
+    local wanted = math.min(BOTTOM_CONTEXT, math.floor(height / 2) - 1)
+
+    if height - vim.fn.winline() < wanted then
+      vim.cmd("normal! zz")
+    end
+  end,
+})

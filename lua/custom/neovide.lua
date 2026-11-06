@@ -18,8 +18,8 @@ if vim.g.neovide then
 
   vim.g.neovide_remember_window_size = true
 
-  vim.g.neovide_opacity = 0.9
-  vim.g.neovide_normal_opacity = 0.9
+  vim.g.neovide_opacity = 0.85
+  vim.g.neovide_normal_opacity = 0.85
 
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_confirm_quit = true

@@ -10,6 +10,20 @@
 --   ~                 ~~strikethrough~~
 -- Esc cancels. v wraps exactly the selection; V wraps whole
 -- lines (the first and last line). Ctrl-V is not supported.
+--
+-- Shortcuts without <leader>su: in Visual mode:
+--   `  wraps the selection in inline code (`...`)
+--   *  wraps the selection in **bold**
+--   (  wraps the selection in parentheses (...)
+--
+-- These shortcuts are limited to keys that are convenient for
+-- common Markdown formatting. Other delimiters remain available
+-- through <leader>su to avoid overriding their existing Visual-
+-- mode behavior.
+--
+-- These mappings apply only to Visual mode, not Select mode
+-- (Shift+arrows or snippet placeholders), where typing these
+-- characters should replace the selection as usual.
 
 local delimiters = {
   ["("] = { "(", ")" },
@@ -28,7 +42,9 @@ local delimiters = {
   ["~"] = { "~~", "~~" },
 }
 
-local function surround_selection()
+-- Wrap the Visual selection with the delimiters of `char`
+-- (asked for when nil). Leaves Visual mode.
+local function surround_selection(char)
   -- Read the selection while still in Visual mode.
   local mode = vim.fn.mode()
   local anchor, cursor = vim.fn.getpos("v"), vim.fn.getpos(".")
@@ -46,11 +62,13 @@ local function surround_selection()
     start_col, end_col = end_col, start_col
   end
 
-  vim.api.nvim_echo({ { "Surround with: " } }, false, {})
-  local char = vim.fn.getcharstr()
-  vim.api.nvim_echo({ { "" } }, false, {})
-  if char == "\27" then
-    return
+  if not char then
+    vim.api.nvim_echo({ { "Surround with: " } }, false, {})
+    char = vim.fn.getcharstr()
+    vim.api.nvim_echo({ { "" } }, false, {})
+    if char == "\27" then
+      return
+    end
   end
 
   local pair = delimiters[char]
@@ -84,13 +102,19 @@ local function surround_selection()
   vim.api.nvim_buf_set_text(0, start_row - 1, start_byte - 1, start_row - 1, start_byte - 1, { open })
 end
 
--- Mapping only in Markdown buffers.
+-- Mappings only in Markdown buffers.
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function(event)
-    vim.keymap.set("x", "<leader>su", surround_selection, {
-      buffer = event.buf,
-      desc = "Surround selection",
-    })
+    local function map(lhs, char, desc)
+      vim.keymap.set("x", lhs, function()
+        surround_selection(char)
+      end, { buffer = event.buf, desc = desc })
+    end
+
+    map("<leader>su", nil, "Surround selection")
+    map("`", "`", "Make selection inline-coded")
+    map("*", "*", "Make selection **bold**")
+    map("(", "(", "Make selection get brackets")
   end,
 })

@@ -124,24 +124,9 @@ return {
         })
       end, { desc = "Find files" })
 
-      -- Live grep needs room: enlarge Neovide while searching and
-      -- restore it when the picker closes (Enter, Esc, …).
       map("n", "<leader>fg", function()
-        hammerspoon.event("neovide-large")
         builtin.live_grep({
           wrap_results = true,
-
-          attach_mappings = function(prompt_bufnr)
-            vim.api.nvim_create_autocmd("BufWipeout", {
-              buffer = prompt_bufnr,
-              once = true,
-              callback = function()
-                hammerspoon.event("neovide-normal")
-              end,
-            })
-            -- true = keep Telescope's default mappings.
-            return true
-          end,
         })
       end, { desc = "Live grep / rg" })
 

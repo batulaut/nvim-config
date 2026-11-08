@@ -39,6 +39,10 @@ map("n", "K", "gk", { desc = "Move up by visual line" })
 map("n", "<leader>J", "J", { desc = "Join lines" })
 map("n", "<leader>K", "K", { desc = "Help for word under cursor" })
 
+-- Insert line below/above without entering Normal mode manually
+map("n", "<leader>o", "o<Esc>", { desc = "New line below" })
+map("n", "<leader>O", "O<Esc>", { desc = "New line above" })
+
 -- Yank the whole buffer (to the system clipboard: clipboard=unnamedplus).
 map("n", "<leader>ya", "<cmd>%yank<cr>", { desc = "Yank all from current buffer" })
 

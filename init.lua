@@ -26,6 +26,7 @@ require("core.keymaps")
 
 -- My own small features (no plugin behind them).
 require("custom.capitalize")
+require("custom.clean_dead_marks")
 require("custom.move_lines")
 require("custom.neovide")
 require("custom.obsidian")

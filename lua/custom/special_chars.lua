@@ -11,6 +11,8 @@ vim.fn.digraph_set("ad", "↓")
 
 -- Mathematics (Not Equals)
 vim.fn.digraph_set("ne", "≠")
+vim.fn.digraph_set("ge", "≥")
+vim.fn.digraph_set("le", "≤")
 
 -- Section
 vim.fn.digraph_set("se", "§")
@@ -19,3 +21,4 @@ vim.fn.digraph_set("se", "§")
 vim.fn.digraph_set("bu", "•")
 vim.fn.digraph_set("ck", "✓")
 vim.fn.digraph_set("em", "—")
+vim.fn.digraph_set("td", "…")

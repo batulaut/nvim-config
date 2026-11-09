@@ -44,10 +44,20 @@ return {
         },
       },
 
-      -- For now, use the Lua fuzzy matcher instead of the native
-      -- Rust matcher.
+      -- The native Rust matcher, which also provides (all on by
+      -- default, none of them in the Lua matcher):
+      -- - frecency: items I pick often/recently rank higher
+      --   (remembered in ~/.local/state/nvim/blink/cmp/frecency.dat)
+      -- - proximity: words near the cursor rank higher
+      -- - typo tolerance: "rekonsilasi" still finds "rekonsiliasi"
+      --
+      -- On this blink version (main/V2) the library is compiled
+      -- with cargo (brew install rust) by the `build` step above,
+      -- also after every blink update. If that ever fails, fall
+      -- back to the Lua matcher with a warning instead of leaving
+      -- Neovim without completion.
       fuzzy = {
-        implementation = "rust",
+        implementation = "prefer_rust_with_warning",
 
         sorts = {
           "exact",

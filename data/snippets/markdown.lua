@@ -30,7 +30,15 @@ return {
     t("buatkan judul-deskripsi PR."),
   }),
 
-  s(";cb", {
+  s(";codeblock", {
+    t("```"),
+    i(1),
+    t({"", ""}),
+    i(2),
+    t({"", "```", ""}),
+  }),
+
+  s(";ckb", {
     t("Sebelum mulai, cek dulu kondisi branch terbaru saat ini."),
   }),
 

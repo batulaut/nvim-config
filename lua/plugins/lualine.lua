@@ -48,8 +48,17 @@ return {
           -- path = 0 → file name only
           -- (1 = relative path, 2 = absolute path).
           {
-            "filename",
-            path = 0,
+            function()
+              local filepath = vim.api.nvim_buf_get_name(0)
+              if filepath == "" then
+                return "[No Name]"
+              end
+
+              local filename = vim.fn.fnamemodify(filepath, ":t")
+              local parent = vim.fn.fnamemodify(filepath, ":h:t")
+
+              return parent .. "/" .. filename
+            end,
           },
 
           -- Git branch name (display only).

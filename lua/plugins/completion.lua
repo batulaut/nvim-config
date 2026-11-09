@@ -47,7 +47,7 @@ return {
       -- For now, use the Lua fuzzy matcher instead of the native
       -- Rust matcher.
       fuzzy = {
-        implementation = "lua",
+        implementation = "rust",
 
         sorts = {
           "exact",

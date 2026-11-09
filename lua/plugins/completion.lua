@@ -117,6 +117,31 @@ return {
         delete_check_events = "TextChanged,InsertLeave",
       })
 
+      -- ...but "leaving" still keeps the snippet in memory, parked on
+      -- its end position ($0), and Shift-Tab then jumps back INTO it
+      -- (e.g. back to where ;cc inserted "Claude Code", lines away).
+      -- The same happens right after a snippet without stops (;cc)
+      -- is expanded. LuaSnip already forgets a snippet when Tab
+      -- jumps to its $0; do the same whenever the cursor lands on
+      -- the $0 of a top-level snippet in any other way.
+      vim.api.nvim_create_autocmd("User", {
+        -- $0 is an "exit node", or an insert node when a snippet
+        -- defines i(0) itself.
+        pattern = { "LuasnipExitNodeEnter", "LuasnipInsertNodeEnter" },
+        callback = function()
+          local node = ls.session.event_node
+          local is_root_end = node.pos == 0 and node.parent.parent_node == nil
+          if is_root_end then
+            -- After LuaSnip has finished moving to that node.
+            vim.schedule(function()
+              if ls.session.current_nodes[vim.api.nvim_get_current_buf()] == node then
+                ls.unlink_current()
+              end
+            end)
+          end
+        end,
+      })
+
       -- Cycle through the options of a choice node, i.e. a
       -- snippet that offers several alternatives at one spot.
       vim.keymap.set({ "i", "s" }, "<C-n>", function()

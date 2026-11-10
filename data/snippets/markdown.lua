@@ -26,6 +26,12 @@ return {
     t("Yang ingin saya tanyakan: "),
   }),
 
+  s(";bb", {
+    t("`"),
+    i(1),
+    t("`"),
+  }),
+
   s(";bjdp", {
     t("buatkan judul-deskripsi PR."),
   }),
